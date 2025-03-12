@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
+            $table->morphs('commentable');
+            $table->text('title')->nullable();
+            $table->text('content')->nullable();
+            $table->boolean('is_visible')->default(false);
             $table->timestamps();
         });
     }

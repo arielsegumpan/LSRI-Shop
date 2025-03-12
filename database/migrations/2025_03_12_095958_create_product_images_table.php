@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\Product;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -13,6 +14,11 @@ return new class extends Migration
     {
         Schema::create('product_images', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(Product::class, 'product_id')->constrained('products', 'id')->cascadeOnDelete();
+            $table->string('url');
+            $table->string('alt_text')->nullable();
+            $table->integer('display_order')->default(0);
+            $table->boolean('is_primary')->default(false);
             $table->timestamps();
         });
     }

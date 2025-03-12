@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('addressables', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('address_id')->constrained('addresses')->cascadeOnDelete();
+            $table->morphs('addressable');
             $table->timestamps();
         });
     }
