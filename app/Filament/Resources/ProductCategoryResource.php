@@ -68,7 +68,7 @@ class ProductCategoryResource extends Resource
 
                             Textarea::make('prod_cat_desc')
                                 ->rows(6)
-                                ->maxLength(5000)
+                                ->maxLength(6000)
                                 ->columnSpanFull(),
                     ]),
 
