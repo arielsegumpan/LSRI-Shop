@@ -37,9 +37,7 @@ class BrandResource extends Resource
             ->schema([
                 Split::make([
                     Section::make()
-                        ->icon('heroicon-o-flag')
                         ->schema([
-
                             TextInput::make('brand_name')
                             ->label('Name')
                             ->required()

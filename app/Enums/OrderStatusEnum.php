@@ -42,7 +42,7 @@ enum OrderStatusEnum: string implements HasIcon, HasColor, HasLabel
     public function getIcon(): ?string
     {
         return match ($this) {
-            self::New => 'heroicon-m-sparkles',
+            self::New => 'heroicon-m-star',
             self::Processing => 'heroicon-m-arrow-path',
             self::Shipped => 'heroicon-m-truck',
             self::Delivered => 'heroicon-m-check-badge',

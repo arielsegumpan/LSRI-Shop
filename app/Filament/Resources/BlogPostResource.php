@@ -215,9 +215,11 @@ class BlogPostResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->weight(FontWeight::ExtraBold)
-                    ->description(fn (BlogPost $record): string => $record->slug)
+                    ->description(fn (BlogPost $record): string => Str::limit($record->slug, 40))
                     ->badge()
-                    ->color('primary'),
+                    ->color('primary')
+                    ->wrap()
+                    ->limit(40),
 
                 TextColumn::make('user.name')
                     ->searchable()
