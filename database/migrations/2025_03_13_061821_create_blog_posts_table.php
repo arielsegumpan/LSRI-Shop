@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->cascadeOnDelete();
             $table->foreignId('blog_category_id')->nullable()->nullOnDelete();
             $table->string('title');
-            $table->string('slug')->unique();
+            $table->string('slug')->unique()->index();
             $table->longText('content');
             $table->date('published_at')->nullable();
             $table->string('seo_title', 60)->nullable();

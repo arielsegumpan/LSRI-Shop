@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Brand::class)->nullable()->constrained()->nullOnDelete();
             $table->string('prod_name');
-            $table->string('prod_slug')->nullable()->unique();
+            $table->string('prod_slug')->nullable()->unique()->index();
             $table->string('prod_sku')->nullable()->unique();
             $table->string('prod_barcode')->nullable()->unique();
             $table->longText('prod_desc')->nullable();

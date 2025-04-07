@@ -14,19 +14,13 @@ return new class extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->string('country')->nullable()->default('Philippines');
+            $table->foreignId('region_id')->nullable()->constrained('philippine_regions')->nullOnDelete();
+            $table->foreignId('province_id')->nullable()->constrained('philippine_provinces')->nullOnDelete();
+            $table->foreignId('city_id')->nullable()->constrained('philippine_cities')->nullOnDelete();
+            $table->foreignId('barangay_id')->nullable()->constrained('philippine_barangays')->nullOnDelete();
             $table->string('street')->nullable();
-            $table->string('city')->nullable();
-            $table->string('state')->nullable();
-            $table->string('zip')->nullable();
-            $table->enum('address_type', ['billing', 'shipping'])->nullable(); // Add Address Type
-            if (DB::getDriverName() === 'pgsql') {
-                $table->string('full_address')->storedAs("street || ', ' || zip || ' ' || city")->nullable();
-            } elseif (DB::getDriverName() === 'sqlite') {
-                $table->string('full_address')->virtualAs("street || ', ' || zip || ' ' || city")->nullable();
-            } else {
-                $table->string('full_address')->virtualAs("CONCAT(street, ', ', zip, ' ', city)")->nullable();
-            }
+            $table->enum('address_type', ['billing', 'shipping'])->nullable();
+            $table->string('full_address')->nullable();
             $table->timestamps();
         });
     }
