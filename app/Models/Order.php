@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use App\Enums\OrderStatusEnum;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Order extends Model
 {
@@ -38,6 +39,12 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
+    /** @return MorphOne<Address> */
+    public function address(): MorphOne
+    {
+        return $this->morphOne(Address::class, 'addressable');
+    }
+
     // public function shippingAddress() : BelongsTo
     // {
     //     return $this->belongsTo(Address::class, 'shipping_address_id');
@@ -48,25 +55,25 @@ class Order extends Model
     //     return $this->belongsTo(Address::class, 'billing_address_id');
     // }
 
-    public function shippingAddress()
-    {
-        return $this->morphToMany(Address::class, 'addressable', 'addressables')
-            ->wherePivot('address_type', 'shipping')
-            ->withTimestamps();
-    }
+    // public function shippingAddress()
+    // {
+    //     return $this->morphToMany(Address::class, 'addressable', 'addressables')
+    //         ->wherePivot('address_type', 'shipping')
+    //         ->withTimestamps();
+    // }
 
-    public function billingAddress()
-    {
-        return $this->morphToMany(Address::class, 'addressable', 'addressables')
-            ->wherePivot('address_type', 'billing')
-            ->withTimestamps();
-    }
+    // public function billingAddress()
+    // {
+    //     return $this->morphToMany(Address::class, 'addressable', 'addressables')
+    //         ->wherePivot('address_type', 'billing')
+    //         ->withTimestamps();
+    // }
 
-    public function addresses() : MorphToMany
-    {
-        return $this->morphToMany(Address::class, 'addressable', 'addressables')
-            ->withTimestamps();
-    }
+    // public function addresses() : MorphToMany
+    // {
+    //     return $this->morphToMany(Address::class, 'addressable', 'addressables')
+    //         ->withTimestamps();
+    // }
 
 
     public function orderItems() : HasMany

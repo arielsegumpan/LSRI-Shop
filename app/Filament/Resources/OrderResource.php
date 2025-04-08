@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use App\Enums\OrderStatusEnum;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Group;
+use App\Forms\Components\AddressForm;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Textarea;
@@ -114,31 +115,17 @@ class OrderResource extends Resource
                 ->searchable()
                 ->getOptionLabelFromRecordUsing(fn ($record) => ucwords($record->name)),
 
-
-
-            TextInput::make('order_total_price')
-                ->label('Total Price')
-                ->numeric()
-                ->dehydrated()
-                ->required()
-                ->maxLength(12)
-                ->default(0)
-                ->placeholder('0.00'),
-
-            TextInput::make('order_currency')
-                ->label('Currency')
-                ->dehydrated()
-                ->required()
-                ->maxLength(3)
-                ->default('PHP'),
-
-            TextInput::make('shipping_method')
+            Select::make('shipping_method')
                 ->label('Shipping Method')
-                ->dehydrated()
-                ->required()
-                ->maxLength(32)
-                ->default('Standard Shipping')
-                ->placeholder('Standard Shipping'),
+                ->options([
+                    'standard' => 'Standard Shipping',
+                    'express' => 'Express Shipping',
+                    'overnight' => 'Overnight Shipping',
+                ])
+                ->preload()
+                ->native(false)
+                ->searchable()
+                ->getOptionLabelFromRecordUsing(fn ($record) => ucwords($record->name)),
 
             TextInput::make('shipping_price')
                 ->label('Shipping Price')
@@ -156,6 +143,9 @@ class OrderResource extends Resource
                 ->dehydrated()
                 ->required()
                 ->columnSpanFull(),
+
+            AddressForm::make('address')
+                ->columnSpan('full'),
 
             Textarea::make('order_notes')
                 ->label('Notes')
