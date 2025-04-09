@@ -6,7 +6,7 @@ use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 
-enum PaymentMethodEnum: string implements HasColor, HasLabel
+enum PaymentMethodEnum: string implements HasColor, HasLabel, HasIcon
 {
     case COD = 'cod';
 
@@ -32,6 +32,14 @@ enum PaymentMethodEnum: string implements HasColor, HasLabel
         };
     }
 
+    public function getIcon(): string
+    {
+        return match ($this) {
+            self::COD => 'heroicon-o-truck',
+            self::BANK_TRANSFER => 'heroicon-o-banknotes',
+            self::CREDIT_CARD => 'heroicon-o-credit-card',
+        };
+    }
 }
 
 

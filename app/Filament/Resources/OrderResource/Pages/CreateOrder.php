@@ -43,14 +43,16 @@ class CreateOrder extends CreateRecord
     {
         return [
             Step::make('Order Details')
+                ->icon('heroicon-o-shopping-bag')
                 ->schema([
                     Section::make()->schema(OrderResource::getDetailsFormSchema())->columns(),
                 ]),
 
             Step::make('Order Items')
+                ->icon('heroicon-o-shopping-cart')
                 ->schema([
                     Section::make()->schema([
-                        // OrderResource::getItemsRepeater(),
+                        OrderResource::getOrderItemsRepeater(),
                     ]),
                 ]),
         ];

@@ -9,11 +9,13 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use App\Enums\OrderStatusEnum;
+use App\Enums\PaymentMethodEnum;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Group;
 use App\Forms\Components\AddressForm;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
@@ -28,6 +30,10 @@ class OrderResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
 
+    protected static ?string $navigationGroup = 'Shop';
+
+    // protected static ?int $navigationSort = 1;
+
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
@@ -40,6 +46,11 @@ class OrderResource extends Resource
 
                 Section::make()
                     ->schema(static::getDetailsFormSchema()),
+
+                Section::make()
+                    ->schema([
+                        static::getOrderItemsRepeater(),
+                    ])
 
 
 
@@ -115,17 +126,14 @@ class OrderResource extends Resource
                 ->searchable()
                 ->getOptionLabelFromRecordUsing(fn ($record) => ucwords($record->name)),
 
-            Select::make('shipping_method')
+            ToggleButtons::make('shipping_method')
                 ->label('Shipping Method')
-                ->options([
-                    'standard' => 'Standard Shipping',
-                    'express' => 'Express Shipping',
-                    'overnight' => 'Overnight Shipping',
-                ])
-                ->preload()
-                ->native(false)
-                ->searchable()
-                ->getOptionLabelFromRecordUsing(fn ($record) => ucwords($record->name)),
+                ->options(PaymentMethodEnum::class)
+                ->inline(),
+                // // ->preload()
+                // ->native(false)
+                // ->searchable()
+                // ->getOptionLabelFromRecordUsing(fn ($record) => ucwords($record->name)),
 
             TextInput::make('shipping_price')
                 ->label('Shipping Price')
@@ -154,5 +162,48 @@ class OrderResource extends Resource
                 ->rows(5)
                 ->placeholder('Any special instructions or notes for the order')
         ];
+    }
+
+
+    public static function getOrderItemsRepeater(): Repeater
+    {
+        return Repeater::make('orderItems')
+            ->relationship()
+            ->schema([
+                Select::make('product_id')
+                    ->label('Product')
+                    ->relationship('product', 'prod_name')
+                    ->preload()
+                    ->optionsLimit(6)
+                    ->native(false)
+                    ->searchable()
+                    ->getOptionLabelFromRecordUsing(fn ($record) => ucwords($record->prod_name)),
+
+                TextInput::make('quantity')
+                    ->label('Quantity')
+                    ->numeric()
+                    ->dehydrated()
+                    ->required()
+                    ->maxLength(12)
+                    ->default(1),
+
+                TextInput::make('unit_price')
+                    ->label('Unit Price')
+                    ->numeric()
+                    ->dehydrated()
+                    ->required()
+                    ->maxLength(12)
+                    ->default(0)
+                    ->placeholder('0.00'),
+
+                TextInput::make('subtotal')
+                    ->label('Subtotal')
+                    ->numeric()
+                    ->dehydrated()
+                    ->required()
+                    ->maxLength(12)
+                    ->default(0)
+                    ->placeholder('0.00'),
+            ]);
     }
 }

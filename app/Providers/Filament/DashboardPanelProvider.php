@@ -50,6 +50,7 @@ class DashboardPanelProvider extends PanelProvider
             ->favicon(asset('imgs/logo-01.png'))
             ->topNavigation()
             ->sidebarCollapsibleOnDesktop(true)
+            ->registration()
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -60,38 +61,11 @@ class DashboardPanelProvider extends PanelProvider
                 // Widgets\AccountWidget::class,
                 // Widgets\FilamentInfoWidget::class,
             ])
-            ->navigation(function (NavigationBuilder $builder): NavigationBuilder {
-                return $builder
-                    ->items([
-                        NavigationItem::make('Dashboard')
-                            ->icon('heroicon-o-presentation-chart-bar')
-                            ->isActiveWhen(fn(): bool => request()->routeIs('filament.wsaps-dashboard.pages.dashboard'))
-                            ->url(fn(): string => Dashboard::getUrl())
-                    ])
-                    ->groups([
-                        NavigationGroup::make('Shop')
-                            ->icon('heroicon-o-building-storefront')
-                            ->items([
-                                ...OrderResource::getNavigationItems(),
-                                ...ProductResource::getNavigationItems(),
-                                ...BrandResource::getNavigationItems(),
-                                ...ProductCategoryResource::getNavigationItems(),
-                            ]),
-                        NavigationGroup::make('Posts')
-                            ->icon('heroicon-o-pencil-square')
-                            ->items([
-                                ...BlogPostResource::getNavigationItems(),
-                                ...BlogCategoryResource::getNavigationItems(),
-                            ]),
-
-                        NavigationGroup::make('Accounts')
-                            ->icon('heroicon-o-user')
-                            ->items([
-                                ...UserResource::getNavigationItems(),
-                                ...RoleResource::getNavigationItems(),
-                            ]),
-                    ]);
-            })
+            ->navigationGroups([
+                'Shop',
+                'Posts',
+                'Accounts',
+            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
