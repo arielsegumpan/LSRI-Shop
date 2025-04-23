@@ -34,7 +34,7 @@
                         </a>
 
                         <a class="p-2 flex items-center text-sm rounded-lg focus:outline-hidden dark:text-neutral-200 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700
-                            {{ request()->routeIs('page.shop') ? 'bg-gray-100 text-gray-800 dark:bg-neutral-700' : 'text-gray-800 hover:bg-gray-100' }}"
+                            {{ request()->routeIs('page.shop')  || request()->routeIs('page.shop.single') ? 'bg-gray-100 text-gray-800 dark:bg-neutral-700' : 'text-gray-800 hover:bg-gray-100' }}"
                             href="{{ route('page.shop') }}">
                             <svg class="shrink-0 size-4 me-3 md:me-2 block md:hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -42,6 +42,17 @@
                                 <circle cx="12" cy="7" r="4"/>
                             </svg>
                             Shop
+                        </a>
+
+                        <a class="p-2 flex items-center text-sm rounded-lg focus:outline-hidden dark:text-neutral-200 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700
+                            {{ request()->routeIs('page.blog') ? 'bg-gray-100 text-gray-800 dark:bg-neutral-700' : 'text-gray-800 hover:bg-gray-100' }}"
+                            href="{{ route('page.blog') }}">
+                            <svg class="shrink-0 size-4 me-3 md:me-2 block md:hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+                                <circle cx="12" cy="7" r="4"/>
+                            </svg>
+                            Blog
                         </a>
 
                         <a class="p-2 flex items-center text-sm rounded-lg focus:outline-hidden dark:text-neutral-200 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700
