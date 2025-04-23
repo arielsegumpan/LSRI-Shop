@@ -6,26 +6,14 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
 use Filament\PanelProvider;
-use Filament\Pages\Dashboard;
 use Filament\Support\Colors\Color;
-use Filament\Navigation\NavigationItem;
-use App\Filament\Resources\UserResource;
-use Filament\Navigation\NavigationGroup;
-use App\Filament\Resources\BrandResource;
-use App\Filament\Resources\OrderResource;
 use Filament\Http\Middleware\Authenticate;
-use Filament\Navigation\NavigationBuilder;
-use App\Filament\Resources\ProductResource;
-use App\Filament\Resources\BlogPostResource;
 use Illuminate\Session\Middleware\StartSession;
-use App\Filament\Resources\BlogCategoryResource;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Filament\Http\Middleware\AuthenticateSession;
-use App\Filament\Resources\ProductCategoryResource;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use BezhanSalleh\FilamentShield\Resources\RoleResource;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -48,7 +36,7 @@ class DashboardPanelProvider extends PanelProvider
             ->brandLogo(asset('imgs/logo-01.png', true))
             ->brandLogoHeight('3rem')
             ->favicon(asset('imgs/logo-01.png'))
-            ->topNavigation()
+            // ->topNavigation()
             ->sidebarCollapsibleOnDesktop(true)
             ->registration()
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
