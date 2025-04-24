@@ -34,9 +34,9 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'nav.group' => 'Roles & Permissions',
+    'nav.group' => 'Accounts',
     'nav.role.label' => 'Roles',
-    'nav.role.icon' => 'heroicon-o-shield-check',
+    'nav.role.icon' => '',
     'resource.label.role' => 'Role',
     'resource.label.roles' => 'Roles',
 

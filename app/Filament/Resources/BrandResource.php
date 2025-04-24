@@ -29,7 +29,7 @@ class BrandResource extends Resource
 {
     protected static ?string $model = Brand::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-flag';
+    protected static ?string $navigationIcon = null;
 
     protected static ?string $navigationGroup = 'Shop';
 
@@ -120,7 +120,8 @@ class BrandResource extends Resource
             ->columns([
 
                 ImageColumn::make('brand_image')
-                ->label('Brand Image')
+                ->label('')
+                ->extraImgAttributes(['loading' => 'lazy'])
                 ->square(),
 
 
@@ -136,7 +137,8 @@ class BrandResource extends Resource
                 ->searchable()
                 ->label('Website')
                 ->icon('heroicon-m-globe-asia-australia')
-                ->iconColor('primary'),
+                ->iconColor('primary')
+                ->copyable(),
 
                 TextColumn::make('brand_desc')
                 ->label('Description')

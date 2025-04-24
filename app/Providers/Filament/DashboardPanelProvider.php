@@ -7,6 +7,7 @@ use Filament\Panel;
 use Filament\Widgets;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Navigation\NavigationGroup;
 use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -50,9 +51,18 @@ class DashboardPanelProvider extends PanelProvider
                 // Widgets\FilamentInfoWidget::class,
             ])
             ->navigationGroups([
-                'Shop',
-                'Posts',
-                'Accounts',
+
+                NavigationGroup::make()
+                ->label('Shop')
+                ->icon('heroicon-o-shopping-cart'),
+
+                NavigationGroup::make()
+                ->label('Posts')
+                ->icon('heroicon-o-newspaper'),
+
+                NavigationGroup::make()
+                ->label('Accounts')
+                ->icon('heroicon-o-user-group'),
             ])
             ->middleware([
                 EncryptCookies::class,

@@ -42,7 +42,7 @@ class ProductCategoryResource extends Resource
 
     // protected static ?string $navigationLabel = 'Product Categories';
 
-    protected static ?string $navigationIcon = 'heroicon-o-queue-list';
+    protected static ?string $navigationIcon = null;
 
     protected static ?string $navigationGroup = 'Shop';
 
@@ -122,10 +122,11 @@ class ProductCategoryResource extends Resource
         return $table
             ->columns([
                 ImageColumn::make('prod_cat_image')
-                ->label('Image')
+                ->label('')
                 ->extraImgAttributes(['loading' => 'lazy'])
                 ->square()
-                ->size(50),
+                ->size(50)
+                ->placeholder('No Image'),
 
                 TextColumn::make('prod_cat_name')
                 ->label('Category Name')

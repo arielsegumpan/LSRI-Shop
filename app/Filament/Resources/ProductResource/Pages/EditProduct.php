@@ -9,6 +9,7 @@ use Illuminate\Contracts\Support\Htmlable;
 
 class EditProduct extends EditRecord
 {
+
     protected static string $resource = ProductResource::class;
 
     protected function getHeaderActions(): array
