@@ -13,6 +13,7 @@ class Brand extends Model
         'brand_image',
         'brand_website',
         'is_visible',
+        'brand_desc',
     ];
 
     /**

@@ -14,6 +14,7 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\ToggleColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\ToggleButtons;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -43,7 +44,7 @@ class BlogCategoryResource extends Resource
 
                     Group::make()
                     ->schema([
-                        TextInput::make('name')
+                        TextInput::make('cat_name')
                             ->label('Name')
                             ->required()
                             ->placeholder('Enter the name of the category')
@@ -72,7 +73,7 @@ class BlogCategoryResource extends Resource
                         ->dehydrated()
                         ->grouped(),
 
-                    Textarea::make('description')
+                    Textarea::make('cat_description')
                         ->label('Description')
                         ->placeholder('Enter the description of the category')
                         ->rows(6)
@@ -88,21 +89,33 @@ class BlogCategoryResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')
+                TextColumn::make('cat_name')
                     ->searchable()
                     ->sortable()
                     ->label('Category')
                     ->formatStateUsing(fn (string $state): string => ucwords($state))
                     ->badge()
                     ->color('warning'),
-                TextColumn::make('slug')
+
+                TextColumn::make('cat_slug')
                     ->searchable()
                     ->sortable()
                     ->label('Slug'),
-                TextColumn::make('description')
+
+                ToggleColumn::make('cat_is_visible')
+                    ->label('Is Visible'),
+
+                TextColumn::make('cat_description')
                     ->label('Description')
                     ->wrap()
-                    ->limit(50),
+                    ->limit(50)
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                TextColumn::make('created_at')
+                    ->date('Y-m-d')
+                    ->sortable()
+                    ->label('Created At')
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //

@@ -19,7 +19,9 @@ return new class extends Migration
             $table->string('prod_slug')->nullable()->unique()->index();
             $table->string('prod_sku')->nullable()->unique();
             $table->string('prod_barcode')->nullable()->unique();
-            $table->longText('prod_desc')->nullable();
+            $table->string('prod_ft_image')->nullable();
+            $table->text('prod_short_desc')->nullable();
+            $table->longText('prod_long_desc')->nullable();
             $table->unsignedBigInteger('prod_qty')->default(0);
             $table->unsignedBigInteger('prod_security_stock')->default(0);
             $table->boolean('is_featured')->default(0);
@@ -29,7 +31,6 @@ return new class extends Migration
             $table->decimal('prod_cost', 10, 2)->nullable();
             $table->string('prod_color')->nullable();
             $table->enum('prod_type', ['deliverable', 'downloadable'])->nullable();
-            $table->boolean('prod_backorder')->default(false);
             $table->boolean('prod_requires_shipping')->default(false);
             $table->date('prod_published_at')->nullable();
             $table->string('prod_seo_title', 60)->nullable();

@@ -39,10 +39,21 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
-    /** @return MorphOne<Address> */
-    public function address(): MorphOne
+    // /** @return MorphOne<Address> */
+    // public function address(): MorphOne
+    // {
+    //     return $this->morphOne(Address::class, 'addressable');
+    // }
+
+    public function addresses(): MorphToMany
     {
-        return $this->morphOne(Address::class, 'addressable');
+        return $this->morphToMany(Address::class, 'addressable');
+    }
+
+    public function address()
+    {
+        // Helper method to get the first (shipping) address
+        return $this->addresses()->where('address_type', 'shipping')->first();
     }
 
     // public function shippingAddress() : BelongsTo

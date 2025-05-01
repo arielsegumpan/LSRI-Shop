@@ -23,10 +23,10 @@ class Address extends Model
         'full_address',
     ];
 
-    public function addressable(): MorphTo
-    {
-        return $this->morphTo();
-    }
+    // public function addressable(): MorphTo
+    // {
+    //     return $this->morphTo();
+    // }
 
     public function orders() : MorphToMany
     {

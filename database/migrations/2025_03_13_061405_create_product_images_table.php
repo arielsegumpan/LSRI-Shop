@@ -17,8 +17,6 @@ return new class extends Migration
             $table->foreignIdFor(Product::class, 'product_id')->constrained('products', 'id')->cascadeOnDelete();
             $table->string('url');
             $table->string('alt_text')->nullable();
-            $table->integer('display_order')->default(0);
-            $table->boolean('is_primary')->default(false);
             $table->timestamps();
         });
     }

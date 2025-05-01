@@ -173,11 +173,11 @@ class ProductResource extends Resource
                 //
             ])
             ->actions([
-                // Tables\Actions\ViewAction::make(),
-                // Tables\Actions\ActionGroup::make([
-                //     Tables\Actions\EditAction::make(),
-                //     Tables\Actions\DeleteAction::make(),
-                // ])->tooltip('Actions')
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])->tooltip('Actions')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -404,14 +404,6 @@ class ProductResource extends Resource
                         ->grouped()
                         ->default(false)
                         ->dehydrated(),
-
-                    ToggleButtons::make('prod_backorder')
-                        ->label('Is backorder allowed?')
-                        ->required()
-                        ->boolean()
-                        ->grouped()
-                        ->default(true)
-                        ->dehydrated(),
                 ])
                 ->columnSpan('full')
                 ->columns([
@@ -420,8 +412,17 @@ class ProductResource extends Resource
                     'lg' => 4
                 ]),
 
-                RichEditor::make('prod_desc')
-                ->label('Description')
+                Textarea::make('prod_short_desc')
+                ->label('Short Description')
+                ->required()
+                ->rows(5)
+                ->columnSpan('full')
+                ->maxLength(5000),
+
+
+                RichEditor::make('prod_long_desc')
+                ->label('Long Description')
+                ->required()
                 ->columnSpan('full')
                 ->maxLength(65535),
 

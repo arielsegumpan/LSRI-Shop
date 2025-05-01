@@ -4,6 +4,7 @@ namespace App\Filament\Resources\OrderResource\Pages;
 
 use Filament\Actions;
 use Filament\Forms\Form;
+use App\Forms\Components\AddressForm;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\Section;
 use App\Filament\Resources\OrderResource;
@@ -56,5 +57,42 @@ class CreateOrder extends CreateRecord
                     ]),
                 ]),
         ];
+    }
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        return $data;
+    }
+
+    protected function afterCreate(): void
+    {
+        // Save the address relationship using custom method to find the component
+        $addressForm = $this->findAddressFormComponent($this->form->getComponents());
+
+        if ($addressForm) {
+            $addressForm->saveRelationships();
+        }
+    }
+
+    /**
+     * Recursively find the AddressForm component in the form
+     */
+    protected function findAddressFormComponent($components): ?AddressForm
+    {
+        foreach ($components as $component) {
+            if ($component instanceof AddressForm) {
+                return $component;
+            }
+
+            // If the component has children (like Grid, Fieldset, etc.)
+            if (method_exists($component, 'getChildComponents') && !empty($component->getChildComponents())) {
+                $found = $this->findAddressFormComponent($component->getChildComponents());
+                if ($found) {
+                    return $found;
+                }
+            }
+        }
+
+        return null;
     }
 }
