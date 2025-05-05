@@ -29,7 +29,7 @@ class BlogCategoryResource extends Resource
 
     protected static ?string $model = BlogCategory::class;
 
-    protected static ?string $navigationIcon = null;
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationGroup = 'Posts';
 

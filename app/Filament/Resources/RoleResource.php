@@ -23,9 +23,11 @@ class RoleResource extends Resource implements HasShieldPermissions
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static ?string $navigationIcon = null;
+    protected static ?string $navigationIcon = 'heroicon-o-user';
 
     protected static ?string $navigationGroup = 'Accounts';
+
+    protected static ?int $navigationSort = 1;
 
     public static function getPermissionPrefixes(): array
     {
@@ -111,14 +113,18 @@ class RoleResource extends Resource implements HasShieldPermissions
                     ->colors(['success']),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label(__('filament-shield::filament-shield.column.updated_at'))
-                    ->dateTime(),
+                    ->dateTime('F j, Y - g:i a'),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()
+                ->label('')
+                ->tooltip('Edit'),
+                Tables\Actions\DeleteAction::make()
+                ->label('')
+                ->tooltip('Delete'),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

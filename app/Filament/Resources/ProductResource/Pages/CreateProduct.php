@@ -62,7 +62,7 @@ class CreateProduct extends CreateRecord
                      Section::make()->schema(ProductResource::getProductPricesFormSchema()),
                  ]),
 
-            Step::make('Product Images')
+            Step::make('Product Gallery')
                 ->icon('heroicon-o-photo')
                 ->schema([
                     Section::make()->schema([ProductResource::getProductPhotosFormSchema()]),

@@ -24,7 +24,6 @@ class Product extends Model
         'prod_security_stock',
         'is_featured',
         'is_visible',
-        'prod_old_price',
         'prod_price',
         'prod_cost',
         'prod_color',
@@ -43,7 +42,6 @@ class Product extends Model
     protected $casts = [
         'is_featured' => 'boolean',
         'is_visible' => 'boolean',
-        'prod_backorder' => 'boolean',
         'prod_requires_shipping' => 'boolean',
         'prod_published_at' => 'datetime',
         'prod_dimensions' => 'array', // Cast JSON to array
@@ -57,9 +55,6 @@ class Product extends Model
     {
         return $this->belongsToMany(ProductCategory::class, 'product_category_product', 'product_id', 'product_category_id')->withTimestamps();
     }
-
-
-
     public function productImages() : HasMany
     {
         return $this->hasMany(ProductImage::class);
@@ -68,5 +63,21 @@ class Product extends Model
     public function orderItems() : HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function sales() : BelongsToMany
+    {
+        return $this->belongsToMany(Sale::class, 'product_sale', 'product_id', 'sale_id')
+                    ->withPivot('sale_price')
+                    ->withTimestamps();
+    }
+
+    public function currentSale()
+    {
+        return $this->sales()
+            ->where('starts_at', '<=', now())
+            ->where('ends_at', '>=', now())
+            ->orderBy('starts_at', 'desc')
+            ->first();
     }
 }

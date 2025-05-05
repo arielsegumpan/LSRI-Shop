@@ -42,7 +42,7 @@ class ProductCategoryResource extends Resource
 
     // protected static ?string $navigationLabel = 'Product Categories';
 
-    protected static ?string $navigationIcon = null;
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationGroup = 'Shop';
 

@@ -48,7 +48,7 @@ class BlogPostResource extends Resource
 
     protected static ?string $navigationLabel = 'Blogs';
 
-    protected static ?string $navigationIcon = null;
+    protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static ?string $navigationGroup = 'Posts';
 

@@ -18,6 +18,7 @@ use Filament\Forms\Components\Split;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Support\Enums\FontWeight;
+use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\IconColumn;
@@ -35,11 +36,14 @@ use Filament\Tables\Columns\ToggleColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\ToggleButtons;
+use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
 use Illuminate\Database\Eloquent\Collection;
 use Filament\Infolists\Components\ImageEntry;
 use App\Filament\Resources\ProductResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Infolists\Components\Group as InfoGroup;
+use Filament\Infolists\Components\Split as InfoSplit;
 use Filament\Infolists\Components\Section as InfoSection;
 use App\Filament\Resources\ProductResource\RelationManagers;
 
@@ -47,7 +51,7 @@ class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
 
-    protected static ?string $navigationIcon = null;
+    protected static ?string $navigationIcon = 'heroicon-o-cube';
 
     protected static ?string $navigationGroup = 'Shop';
 
@@ -417,8 +421,7 @@ class ProductResource extends Resource
                 ->required()
                 ->rows(5)
                 ->columnSpan('full')
-                ->maxLength(5000),
-
+                ->maxLength(1000),
 
                 RichEditor::make('prod_long_desc')
                 ->label('Long Description')
@@ -431,6 +434,22 @@ class ProductResource extends Resource
                'sm' => 1,
                'md' => 3,
                'lg' => 3,
+           ])->columnSpanFull(),
+
+           Fieldset::make('Featured Image')
+           ->schema([
+               FileUpload::make('prod_ft_image')
+               ->image()
+               ->hiddenLabel()
+               ->imageEditor()
+               ->imageEditorAspectRatios([
+                   '16:9',
+               ])
+               ->maxSize(2048)
+               ->required()
+               ->columnSpanFull()
+
+
            ])->columnSpanFull()
 
         ];
@@ -442,11 +461,6 @@ class ProductResource extends Resource
         return [
            Group::make()
            ->schema([
-                TextInput::make('prod_price')
-                ->label('Old Price')
-                ->numeric()
-                ->default(0),
-
                 TextInput::make('prod_price')
                 ->label('Price')
                 ->numeric()
@@ -514,25 +528,13 @@ class ProductResource extends Resource
                     Group::make()
                     ->schema([
                         TextInput::make('alt_text')
-                            ->maxLength(255),
+                        ->maxLength(255),
 
-                        TextInput::make('display_order')
-                            ->numeric()
-                            ->default(0)
-                            ->minlength(0)
-                            ->unique(ProductImage::class, 'display_order', ignoreRecord: true),
-
-                        ToggleButtons::make('is_primary')
-                            ->boolean()
-                            ->grouped()
-                            ->default(false)
-                            ->dehydrated()
-                            ->columnSpanFull()
                     ])
                     ->columns([
                         'sm' => 1,
-                        'md' => 2,
-                        'lg' => 2
+                        'md' => 1,
+                        'lg' => 1
                     ])
                 ])
                 ->columnSpanFull()
@@ -564,34 +566,77 @@ class ProductResource extends Resource
             ->schema([
                 InfoSection::make()
                 ->schema([
+                    InfoSplit::make([
+                        ImageEntry::make('productImages.url')
+                        ->hiddenLabel()
+                        ->stacked()
+                        ->limit(3)
+                        ->height(100)
+                        ->overlap(7)
+                        ->circular()
+                        ->grow(false),
 
-                    ImageEntry::make('productImages.url')
-                    ->hiddenLabel()
-                    ->stacked()
-                    ->limit(3)
-                    ->height(100)
-                    ->square(),
+                        InfoGroup::make([
+                            TextEntry::make('prod_name')
+                            ->label('')
+                            ->size(TextEntry\TextEntrySize::Large)
+                            ->weight(FontWeight::ExtraBold)
+                            ->formatStateUsing(fn (string $state) : string => ucwords($state) ),
 
-                    TextEntry::make('prod_name')
-                    ->label('Product')
-                    ->size(TextEntry\TextEntrySize::Large)
-                    ->weight(FontWeight::ExtraBold)
-                    ->formatStateUsing(fn (string $state) : string => ucwords($state) ),
+                            TextEntry::make('prod_type')
+                            ->label('Type')
+                            ->badge()
+                            ->color(fn (string $state) => match ($state) {
+                                ProductTypeEnum::DELIVERABLE->value => ProductTypeEnum::DELIVERABLE->getColor(),
+                                ProductTypeEnum::DOWNLOADABLE->value => ProductTypeEnum::DOWNLOADABLE->getColor(),
+                                default => 'gray',
+                            })
+                            ->icon(fn (string $state) => match ($state) {
+                                ProductTypeEnum::DELIVERABLE->value => ProductTypeEnum::DELIVERABLE->getIcon(),
+                                ProductTypeEnum::DOWNLOADABLE->value => ProductTypeEnum::DOWNLOADABLE->getIcon(),
+                                default => 'heroicon-m-question-mark-circle',
+                            }),
 
-                    TextEntry::make('prod_sku')
-                    ->label('SKU')
-                    ->size(TextEntry\TextEntrySize::Large)
-                    ->weight(FontWeight::ExtraBold)
-                    ->badge()
-                    ->color('success')
-                    ->copyable()
-                    ->toolTip('Copy SKU'),
+                            TextEntry::make('prod_sku')
+                            ->label('SKU')
+                            ->size(TextEntry\TextEntrySize::Large)
+                            ->weight(FontWeight::ExtraBold)
+                            ->badge()
+                            ->color('success')
+                            ->copyable()
+                            ->toolTip('Copy SKU'),
 
+                            TextEntry::make('prod_price')
+                            ->label('Price')
+                            ->size(TextEntry\TextEntrySize::Large)
+                            ->weight(FontWeight::ExtraBold)
+                            ->prefix('₱ ')
+                        ])
+                        ->columns([
+                            'sm' => 1,
+                            'md' => 2,
+                            'lg' => 2
+                        ])
+                    ])
+                    ->columnSpan('full')
+                    ->from('md')
+                ]),
 
+                InfoSection::make('Short Description')
+                ->icon('heroicon-m-document-text')
+                ->schema([
+                    TextEntry::make('prod_short_desc')
+                    ->label('')
+                    ->columnSpanFull()
+                ]),
 
-
-
-
+                InfoSection::make('Long Description')
+                ->icon('heroicon-m-document-text')
+                ->schema([
+                    TextEntry::make('prod_long_desc')
+                    ->label('')
+                    ->markdown()
+                    ->columnSpanFull()
                 ])
             ]);
     }

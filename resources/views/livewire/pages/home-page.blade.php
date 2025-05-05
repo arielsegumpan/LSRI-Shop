@@ -1,4 +1,5 @@
 <div>
+    {{-- @dd($getFtProds) --}}
     <div id="hs-offcanvas-body-scrolling-with-backdrop" class="hs-overlay [--body-scroll:true] hs-overlay-open:translate-x-0 hidden -translate-x-full fixed top-0 start-0 transition-all duration-300 transform h-full max-w-xs w-full z-10 bg-white border-e border-gray-200 dark:bg-neutral-800 dark:border-neutral-700" role="dialog" tabindex="-1" aria-labelledby="hs-offcanvas-body-scrolling-with-backdrop-label">
         <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-neutral-700">
           <h3 id="hs-offcanvas-body-scrolling-with-backdrop-label" class="font-bold text-gray-800 dark:text-white">
@@ -26,12 +27,18 @@
         }' class="relative">
         <div class="hs-carousel relative overflow-hidden w-full h-120 md:h-[calc(100vh-250px)]  bg-gray-100 rounded-2xl dark:bg-neutral-800">
             <div class="hs-carousel-body absolute top-0 bottom-0 start-0 flex flex-nowrap transition-transform duration-700 opacity-0">
+
+            @foreach ($getFtProds as $getFtProd)
             <!-- Item -->
             <div class="hs-carousel-slide">
-                <div class="h-120 md:h-[calc(100vh-250px)]  flex flex-col bg-[url('https://images.unsplash.com/photo-1625321171045-1fea4ac688e9?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-cover bg-center bg-no-repeat">
-                <div class="mt-auto w-2/3 md:max-w-lg ps-5 pb-5 md:ps-10 md:pb-10">
-                    <span class="block text-white">Lorem, ipsum dolor</span>
-                    <span class="block text-white text-xl md:text-3xl">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eaque, cupiditate.</span>
+                {{-- <div class="h-120 md:h-[calc(100vh-250px)]  flex flex-col bg-[url('{{ asset(Storage::url($getFtProd->prod_ft_image )) }}')] bg-cover bg-center bg-no-repeat"> --}}
+                <div
+                    class="h-120 md:h-[calc(100vh-250px)] flex flex-col bg-cover bg-center bg-no-repeat"
+                    style="background-image: url('{{ asset(Storage::url($getFtProd['prod_ft_image'])) }}');"
+                >
+                    <div class="mt-auto w-2/3 md:max-w-lg ps-5 pb-5 md:ps-10 md:pb-10">
+                    <span class="block text-white">qwqwq</span>
+                    <span class="block text-white text-xl md:text-3xl">{{ $getFtProd['prod_name'] }}</span>
                     <div class="mt-5">
                     <a class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg bg-white border border-transparent text-black hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none" href="#">
 
@@ -46,49 +53,8 @@
                 </div>
             </div>
             <!-- End Item -->
+            @endforeach
 
-            <!-- Item -->
-            <div class="hs-carousel-slide">
-                <div class="h-120 md:h-[calc(100vh-250px)]  flex flex-col bg-[url('https://plus.unsplash.com/premium_photo-1726761692986-6bcde87fc2b8?q=80&w=2001&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-cover bg-center bg-no-repeat">
-                <div class="mt-auto w-2/3 md:max-w-lg ps-5 pb-5 md:ps-10 md:pb-10">
-                    <span class="block text-white">Lorem, ipsum</span>
-                    <span class="block text-white text-xl md:text-3xl">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sit, iusto.</span>
-                    <div class="mt-5">
-                    <a class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg bg-white border border-transparent text-black hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none" href="#">
-
-                        <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-                        </svg>
-
-
-                       Add to Cart
-                    </a>
-                    </div>
-                </div>
-                </div>
-            </div>
-            <!-- End Item -->
-
-            <!-- Item -->
-            <div class="hs-carousel-slide">
-                <div class="h-120 md:h-[calc(100vh-250px)]  flex flex-col bg-[url('https://plus.unsplash.com/premium_photo-1683134390918-7fc5b8f54347?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-cover bg-center bg-no-repeat">
-                <div class="mt-auto w-2/3 md:max-w-lg ps-5 pb-5 md:ps-10 md:pb-10">
-                    <span class="block text-white">Lorem, ipsum</span>
-                    <span class="block text-white text-xl md:text-3xl">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, cupiditate omnis enim nam incidunt et.</span>
-                    <div class="mt-5">
-                    <a class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg bg-white border border-transparent text-black hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none" href="#">
-
-                        <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-                        </svg>
-
-                        Add to Cart
-                    </a>
-                    </div>
-                </div>
-                </div>
-            </div>
-            <!-- End Item -->
             </div>
         </div>
 
@@ -275,38 +241,82 @@
             "isDraggable": true
         }' class="relative">
             <div class="w-full overflow-hidden bg-white rounded-lg hs-carousel">
-            <div class="relative -mx-1 min-h-[25rem]">
+            <div class="relative -mx-1 min-h-[38rem]">
                 <div class="absolute top-0 bottom-0 flex transition-transform duration-700 opacity-0 hs-carousel-body start-0 flex-nowrap cursor-grab hs-carousel-dragging:transition-none hs-carousel-dragging:cursor-grabbing">
-                <div class="px-1 hs-carousel-slide">
-                    <div class="flex justify-center h-full p-6 bg-gray-100 dark:bg-neutral-900">
-                    <span class="self-center text-sm text-gray-800 transition duration-700 dark:text-white">First slide</span>
+
+                @foreach ($newProducts as $product)
+                <!-- Card -->
+                <div class="hs-carousel-slide flex flex-col border shadow-sm bg-neutral-200 rounded-xl dark:bg-neutral-900 border-neutral-300 dark:border-neutral-700 dark:shadow-neutral-700/70">
+                    <a class="px-5 pt-5" href="{{ route('page.shop.single', $product['prod_slug']) }}">
+                        <div class="p-4 md:p-5">
+                            <span class=" inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800 dark:bg-teal-800/30 dark:text-teal-500">
+                                {{ $product['prod_sku'] }}
+                            </span>
+
+                            <h3 class="text-lg font-bold text-gray-800 dark:text-white py-1.5">
+                                {{ $product['prod_name'] }}
+                            </h3>
+
+                            <p class="text-sm text-gray-500 dark:text-neutral-500">
+                                {{ $product['brand']['brand_name'] ?? 'N/A' }}
+                            </p>
+
+                            <!-- GROUPS -->
+                            <div class="flex flex-row items-center justify-between mt-3 align-middle">
+                                <h5 class="font-bold text-gray-500 dark:text-white">
+                                    ₱ {{ $product['prod_price'] }} -
+                                    <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-lg text-sm font-bold bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-500">
+                                        {{ $product['prod_qty'] }}
+                                    </span>
+                                </h5>
+
+                                <!-- Popover -->
+                                <div class="hs-tooltip [--trigger:hover] [--placement:left] inline-block">
+                                    <div class="flex items-center justify-center text-sm font-semibold text-gray-800 bg-white border border-gray-200 rounded-lg shadow-sm hs-tooltip-toggle size-10 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800">
+                                        <svg class="text-red-500 shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
+                                        </svg>
+
+                                        <span class="absolute z-10 invisible inline-block w-full max-w-xs px-3 py-3 text-sm text-gray-600 transition-opacity bg-white border rounded-lg shadow-md opacity-0 hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400" role="tooltip">
+                                            <div class="max-w-[15rem]">
+                                                <div class="inline-flex flex-row flex-wrap gap-2">
+                                                    @forelse ($product['product_categories'] as $category)
+                                                        <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-800/30 dark:text-yellow-500">{{ $category['prod_cat_name'] }}</span>
+                                                    @empty
+                                                        <h1 class="text-gray-500 dark:text-white">No categories</h1>
+                                                    @endforelse
+                                                </div>
+                                            </div>
+                                        </span>
+                                    </div>
+                                </div>
+                                <!-- End Popover -->
+                            </div>
+                            <!-- END GROUP -->
+                        </div>
+
+                        <img class="w-full h-[250px] md:h-[170px] lg:h-[280px] object-cover rounded-b-xl" src="{{ asset('storage/' . ($product['product_images'][0]['url'] ?? 'fallback.jpg')) }}" alt="{{ $product['prod_slug'] }}">
+                    </a>
+
+                    <div class="p-5">
+                        <button type="button" class="inline-flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-center text-white align-middle bg-red-600 border border-transparent rounded-lg gap-x-2 hover:bg-red-700 focus:outline-none focus:bg-red-700 disabled:opacity-50 disabled:pointer-events-none">
+                        {{ __('Add to cart') }}
+                            <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m5 11 4-7"></path>
+                                <path d="m19 11-4-7"></path>
+                                <path d="M2 11h20"></path>
+                                <path d="m3.5 11 1.6 7.4a2 2 0 0 0 2 1.6h9.8c.9 0 1.8-.7 2-1.6l1.7-7.4"></path>
+                                <path d="m9 11 1 9"></path>
+                                <path d="M4.5 15.5h15"></path>
+                                <path d="m15 11-1 9"></path>
+                            </svg>
+                        </button>
                     </div>
                 </div>
-                <div class="px-1 hs-carousel-slide">
-                    <div class="flex justify-center h-full p-6 bg-gray-200 dark:bg-neutral-800">
-                    <span class="self-center text-sm text-gray-800 transition duration-700 dark:text-white">Second slide</span>
-                    </div>
-                </div>
-                <div class="px-1 hs-carousel-slide">
-                    <div class="flex justify-center h-full p-6 bg-gray-300 dark:bg-neutral-700">
-                    <span class="self-center text-sm text-gray-800 transition duration-700 dark:text-white">Third slide</span>
-                    </div>
-                </div>
-                <div class="px-1 hs-carousel-slide">
-                    <div class="flex justify-center h-full p-6 bg-gray-100 dark:bg-neutral-900">
-                    <span class="self-center text-sm text-gray-800 transition duration-700 dark:text-white">Fourth slide</span>
-                    </div>
-                </div>
-                <div class="px-1 hs-carousel-slide">
-                    <div class="flex justify-center h-full p-6 bg-gray-200 dark:bg-neutral-800">
-                    <span class="self-center text-sm text-gray-800 transition duration-700 dark:text-white">Fifth slide</span>
-                    </div>
-                </div>
-                <div class="px-1 hs-carousel-slide">
-                    <div class="flex justify-center h-full p-6 bg-gray-300 dark:bg-neutral-700">
-                    <span class="self-center text-sm text-gray-800 transition duration-700 dark:text-white">Sixth slide</span>
-                    </div>
-                </div>
+                <!-- End Card -->
+
+                @endforeach
+
                 </div>
             </div>
             </div>

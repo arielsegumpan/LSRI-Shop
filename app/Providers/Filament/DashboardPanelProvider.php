@@ -7,6 +7,7 @@ use Filament\Panel;
 use Filament\Widgets;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Hasnayeen\Themes\ThemesPlugin;
 use Filament\Navigation\NavigationGroup;
 use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
@@ -40,6 +41,7 @@ class DashboardPanelProvider extends PanelProvider
             // ->topNavigation()
             ->sidebarCollapsibleOnDesktop(true)
             ->registration()
+            ->viteTheme('resources/css/filament/dashboard/theme.css')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -54,7 +56,7 @@ class DashboardPanelProvider extends PanelProvider
 
                 NavigationGroup::make()
                 ->label('Shop')
-                ->icon('heroicon-o-shopping-cart'),
+                ->icon('heroicon-o-building-storefront'),
 
                 NavigationGroup::make()
                 ->label('Posts')
@@ -95,6 +97,7 @@ class DashboardPanelProvider extends PanelProvider
                         'default' => 1,
                         'sm' => 2,
                     ]),
+
             ]);
     }
 }
