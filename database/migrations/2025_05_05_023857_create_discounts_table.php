@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sales', function (Blueprint $table) {
+        Schema::create('discounts', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('slug')->unique();
-            $table->text('description')->nullable();
-            $table->string('sale_banner')->nullable();
+            $table->string('discount_name');
+            $table->string('discount_slug')->unique();
+            $table->text('discount_desc')->nullable();
+            $table->string('discount_banner')->nullable();
             $table->dateTime('starts_at');
             $table->dateTime('ends_at');
             $table->timestamps();
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sales');
+        Schema::dropIfExists('discounts');
     }
 };

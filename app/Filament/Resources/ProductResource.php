@@ -78,8 +78,6 @@ class ProductResource extends Resource
 
                     Section::make()
                     ->schema([static::getProductPhotosFormSchema()])
-
-
                 ])
             ]);
     }
@@ -562,7 +560,7 @@ class ProductResource extends Resource
 
     public static function infolist(Infolist $infolist): Infolist
     {
-        return $infolist
+        return $infolist 
             ->schema([
                 InfoSection::make()
                 ->schema([
