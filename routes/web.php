@@ -1,7 +1,9 @@
 <?php
 
 use App\Livewire\Pages\BlogPage;
+use App\Livewire\Pages\Checkout;
 use App\Livewire\Pages\HomePage;
+use App\Livewire\Pages\Services;
 use App\Livewire\Pages\ShopPage;
 use App\Livewire\Pages\AboutPage;
 use App\Livewire\Pages\ContactPage;
@@ -24,4 +26,5 @@ Route::get('/shop', ShopPage::class)->name('page.shop');
 Route::get('/shop/{prod_slug}', ShopPageSingle::class)->name('page.shop.single');
 Route::get('/shop/categories/{prod_cat_slug}', ProductCategorieArchive::class)->name('page.shop.category');
 
-
+Route::get('/services', Services::class)->name('page.services');
+Route::get('/checkout', Checkout::class)->name('page.checkout');

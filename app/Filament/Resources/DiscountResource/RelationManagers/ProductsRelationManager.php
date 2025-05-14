@@ -9,6 +9,7 @@ use Filament\Forms\Set;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
+use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Hidden;
 use Filament\Tables\Columns\TextColumn;
@@ -16,6 +17,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Actions\AttachAction;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Actions\Action;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -28,9 +30,85 @@ class ProductsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('prod_name')
+
+                Radio::make('discount_type')
+                ->label('Discount Type')
+                ->required()
+                ->inline()
+                ->inlineLabel(false)
+                ->live()
+                ->options([
+                    'fixed' => 'Fixed',
+                    'percentage' => 'Percentage',
+                ])
+                ->descriptions([
+                    'fixed' => 'Fixed amount',
+                    'percentage' => 'Percentage',
+                ])
+                ->columnSpanFull(),
+
+                Group::make([
+                    TextInput::make('percentage_value')
+                    ->label('% Value')
+                    ->suffix(' % OFF')
                     ->required()
-                    ->maxLength(255),
+                    ->numeric()
+                    ->minValue(1)
+                    ->maxValue(100)
+                    ->hidden(fn (Get $get): bool => $get('discount_type') !== 'percentage')
+                    ->afterStateUpdated(function(string $state, Forms\Set $set, Forms\Get $get) {
+                        if($get('discount_type') === 'percentage') {
+                            $set('discount_value', $state);
+                        }
+                    })
+                    ->live(onBlur: true)
+                    ->afterStateHydrated(function(Set $set, Get $get, $state, $record) {
+                        if ($record && $get('discount_type') === 'percentage') {
+                            $set('percentage_value', $record->pivot->discount_value);
+                        }
+                    }),
+
+                    TextInput::make('fixed_value')
+                    ->label('Fixed Discount Price')
+                    ->prefix('₱ ')
+                    ->required()
+                    ->numeric()
+                    ->maxLength(6)
+                    ->hidden(fn (Get $get): bool => $get('discount_type') !== 'fixed')
+                    ->afterStateUpdated(function(string $state, Forms\Set $set, Forms\Get $get) {
+                        if($get('discount_type') === 'fixed') {
+                            $set('discount_value', $state);
+                        }
+                    })
+                    ->live(onBlur: true)
+                    ->afterStateHydrated(function(Set $set, Get $get, $state, $record) {
+                        if ($record && $get('discount_type') === 'fixed') {
+                            $set('fixed_value', $record->pivot->discount_value);
+                        }
+                    }),
+
+                    TextInput::make('discount_code')
+                    ->label('Code')
+                    ->maxLength(255)
+                    ->required()
+                    ->suffixAction(
+                        Action::make('regenerateDiscountCode')
+                        ->icon('heroicon-o-arrow-path')
+                        ->tooltip('Generate new discount code')
+                        ->action(function (Get $get, Set $set){
+                            $set('discount_code', static::generateDiscountCode());
+                        })
+                    )
+                ])
+                ->columnspanFull()
+                ->columns([
+                    'sm' => 1,
+                    'md' => 2,
+                    'lg' => 2
+                ]),
+
+                Hidden::make('discount_value')
+                ->required(),
             ]);
     }
 
@@ -59,8 +137,38 @@ class ProductsRelationManager extends RelationManager
                 ->searchable()
                 ->sortable(),
 
-                TextColumn::make('discount_value')
-                ->label('Discount'),
+                TextColumn::make('pivot.discount_value')
+                ->label('Discount')
+                ->weight('bold')
+                ->badge()
+                ->color(function ($state, $record) {
+                    $discountType = $record->pivot->discount_type ?? null;
+                    if (!$discountType) {
+                        if (is_numeric($state) && $state <= 100 && $state == (int)$state) {
+                            $discountType = 'percentage';
+                        } else {
+                            $discountType = 'fixed';
+                        }
+                    }
+
+                    return $discountType === 'percentage' ? 'danger' : 'success';
+                })
+                ->formatStateUsing(function ($state, $record) {
+                    $discountType = $record->pivot->discount_type ?? null;
+                    if (!$discountType) {
+                        if (is_numeric($state) && $state <= 100 && $state == (int)$state) {
+                            $discountType = 'percentage';
+                        } else {
+                            $discountType = 'fixed';
+                        }
+                    }
+
+                    if ($discountType === 'percentage') {
+                        return $state . ' % OFF';
+                    } else {
+                        return '₱ ' . number_format((float)$state, 2);
+                    }
+                }),
 
             ])
             ->filters([
@@ -139,19 +247,21 @@ class ProductsRelationManager extends RelationManager
                         ->action(function (Get $get, Set $set){
                             $set('discount_code', $this->generateDiscountCode());
                         })
-                    )
-                    ,
+                    ),
 
                     Hidden::make('discount_value')
                     ->required()
                     ->dehydrated(),
 
-                    $action->getRecordSelect(),
+                    Placeholder::make('')
+                    ->content('You can select multiple products.')
+                    ->columnSpanFull(),
 
+                    $action->getRecordSelect(),
                 ]),
             ])
             ->actions([
-                // Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make(),
                 Tables\Actions\DetachAction::make(),
                 // Tables\Actions\DeleteAction::make(),
             ])

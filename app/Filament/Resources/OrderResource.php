@@ -7,24 +7,34 @@ use Filament\Tables;
 use App\Models\Order;
 use App\Models\Product;
 use Filament\Forms\Form;
+use Filament\Pages\Page;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use App\Enums\OrderStatusEnum;
 use App\Enums\PaymentMethodEnum;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Group;
 use App\Forms\Components\AddressForm;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
+use Filament\Support\Enums\FontWeight;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Infolists\Components\Split;
+use Filament\Pages\SubNavigationPosition;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\ToggleButtons;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\ImageEntry;
 use App\Filament\Resources\OrderResource\Pages;
+use Filament\Infolists\Components\Group as InfoG;
+use Filament\Infolists\Components\RepeatableEntry;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Infolists\Components\Section as InfoSec;
 use App\Filament\Resources\OrderResource\RelationManagers;
 
 class OrderResource extends Resource
@@ -34,6 +44,8 @@ class OrderResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
 
     protected static ?string $navigationGroup = 'Shop';
+
+    protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 
     // protected static ?int $navigationSort = 1;
 
@@ -54,8 +66,6 @@ class OrderResource extends Resource
                     ->schema([
                         static::getOrderItemsRepeater(),
                     ])
-
-
 
             ]);
     }
@@ -134,6 +144,7 @@ class OrderResource extends Resource
             'index' => Pages\ListOrders::route('/'),
             'create' => Pages\CreateOrder::route('/create'),
             'edit' => Pages\EditOrder::route('/{record}/edit'),
+            'view' => Pages\ViewOrder::route('/{record}'),
         ];
     }
 
@@ -265,5 +276,99 @@ class OrderResource extends Resource
                 'lg' => 4
             ])
             ->defaultItems(1);
+    }
+
+    public static function getRecordSubNavigation(Page $page): array
+    {
+        return $page->generateNavigationItems([
+            Pages\ViewOrder::class,
+        ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                InfoG::make([
+                    RepeatableEntry::make('orderItems')
+                    ->label('')
+                    ->schema([
+
+                        Split::make([
+                            ImageEntry::make('product.prod_ft_image')
+                            ->hiddenLabel()
+                            ->size(60)
+                            ->grow(false),
+
+                            InfoG::make([
+                                TextEntry::make('product.prod_name')
+                                ->weight(FontWeight::ExtraBold),
+
+                                TextEntry::make('quantity')
+                                ->badge()
+                                ->color('warning'),
+
+                                TextEntry::make('subtotal')
+                                ->weight(FontWeight::ExtraBold)
+                                ->badge()
+                                ->color('success')
+                                ->formatStateUsing(fn ($state) => '₱ ' . number_format((float)$state, 2)),
+                            ])
+                            ->columns([
+                                'sm' => 1,
+                                'md' => 3,
+                                'lg' => 3
+
+                            ])
+                        ])
+                        ->from('md')
+
+                    ])
+                ])
+                ->columnSpan([
+                    'sm' => 1,
+                    'md' => 2,
+                    'lg' => 3
+                ]),
+
+                InfoG::make([
+                    InfoSec::make()
+                    ->schema([
+
+                        TextEntry::make('order_status')
+                        ->label('Status')
+                        ->badge()
+                        ->color(fn ($state, $record) => $record->order_status->getColor())
+                        ->icon(fn ($state, $record) => $record->order_status->getIcon()),
+
+                        TextEntry::make('created_at')
+                        ->label('Order Date')
+                        ->dateTime('F d, Y  - g:i A'),
+
+                        TextEntry::make('addresses.full_address')
+                        ->label('Address')
+                        ->weight(FontWeight::ExtraBold)
+                        ->columnSpanFull()
+
+                    ])
+                    ->columns([
+                        'sm' => 1,
+                        'md' => 2,
+                        'lg' => 2
+                    ]),
+
+                ])
+                ->columnSpan([
+                    'sm' => 1,
+                    'md' => 2,
+                    'lg' => 2
+                ])
+
+            ])
+            ->columns([
+                'sm' => 1,
+                'md' => 4,
+                'lg' => 5
+            ]);
     }
 }

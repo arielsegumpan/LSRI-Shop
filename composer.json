@@ -10,8 +10,10 @@
         "bezhansalleh/filament-shield": "^3.3",
         "filament/filament": "^3.3",
         "flowframe/laravel-trend": "^0.4.0",
+        "jantinnerezo/livewire-alert": "^4.0",
         "laravel/framework": "^11.31",
         "laravel/tinker": "^2.10.1",
+        "luigel/laravel-paymongo": "^2.5",
         "woenel/prpcmblmts": "2.x-dev"
     },
     "require-dev": {

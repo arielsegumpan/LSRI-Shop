@@ -80,4 +80,11 @@ class Product extends Model
             ->orderBy('starts_at', 'desc')
             ->first();
     }
+
+
+    public function cartItems() : HasMany
+    {
+        return $this->hasMany(CartItem::class, 'product_id', 'id');
+    }
+
 }

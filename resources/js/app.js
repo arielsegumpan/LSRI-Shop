@@ -1,7 +1,6 @@
 import './bootstrap';
 import 'preline'
 
-
 // This code should be added to <head>.
 // It's used to prevent page load glitches.
 const html = document.querySelector('html');
@@ -12,3 +11,4 @@ if (isLightOrAuto && html.classList.contains('dark')) html.classList.remove('dar
 else if (isDarkOrAuto && html.classList.contains('light')) html.classList.remove('light');
 else if (isDarkOrAuto && !html.classList.contains('dark')) html.classList.add('dark');
 else if (isLightOrAuto && !html.classList.contains('light')) html.classList.add('light');
+

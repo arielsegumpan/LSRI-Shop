@@ -32,6 +32,7 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Pages\SubNavigationPosition;
+use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\ToggleColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\ColorPicker;
@@ -87,90 +88,66 @@ class ProductResource extends Resource
         return $table
             ->columns([
 
-                Grid::make([
-                    'lg' => 3,
-                    '2xl' => 3,
-                ]),
+                ImageColumn::make('productImages.url')
+                ->label('')
+                ->limit(1)
+                ->size(50)
+                ->grow(false),
 
-                Tables\Columns\Layout\Stack::make([
+                TextColumn::make('prod_name')
+                ->searchable()
+                ->sortable()
+                ->label('Product')
+                ->formatStateUsing(fn(string $state) : string => ucwords($state))
+                ->description(fn (Model $record) => ucwords($record->brand->brand_name))
+                ->size(TextColumn\TextColumnSize::Large)
+                ->weight(FontWeight::Bold)
+                ->wrap()
+                ->limit(20),
 
-                        Tables\Columns\Layout\Split::make([
-                            TextColumn::make('prod_sku')
-                            ->searchable()
-                            ->sortable()
-                            ->label('SKU')
-                            ->badge()
-                            ->color('success')
-                            ->copyable()
-                            ->size(TextColumn\TextColumnSize::Large)
-                            ->weight(FontWeight::Bold),
+                TextColumn::make('prod_sku')
+                ->searchable()
+                ->sortable()
+                ->label('SKU')
+                ->badge()
+                ->color('success')
+                ->copyable()
+                ->size(TextColumn\TextColumnSize::Large)
+                ->weight(FontWeight::Bold),
 
-                            ColorColumn::make('prod_color')
-                            ->label('Color'),
+                ColorColumn::make('prod_color')
+                ->label('Color'),
 
-                            IconColumn::make('is_visible')
-                            ->label('Is Visible')
-                            ->tooltip('Visible to the public')
-                            ->boolean()
+                IconColumn::make('is_visible')
+                ->label('Is Visible')
+                ->tooltip('Visible to the public')
+                ->boolean(),
 
+                TextColumn::make('prod_price')
+                ->label('Price')
+                ->sortable()
+                ->money('PHP'),
 
-                        ]),
+                TextColumn::make('prod_qty')
+                ->label('Qty.')
+                ->badge()
+                ->color('success')
+                ->weight(FontWeight::Bold)
+                ->icon('heroicon-o-square-3-stack-3d')
+                ->tooltip('Product stock quantity'),
 
-                        ImageColumn::make('productImages.url')
-                        ->label('Images')
-                        ->limit(1)
-                        ->height('100%')
-                        ->width('100%'),
+                TextColumn::make('productCategories.prod_cat_name')
+                ->badge()
+                ->color('warning')
+                ->toggleable(isToggledHiddenByDefault: true)
+                ->formatStateUsing(fn (string $state) : string => ucwords($state)),
 
-                    Tables\Columns\Layout\Stack::make([
-
-                        TextColumn::make('prod_name')
-                        ->searchable()
-                        ->sortable()
-                        ->label('Product')
-                        ->formatStateUsing(fn(string $state) : string => ucwords($state))
-                        ->description(fn (Model $record) => ucwords($record->brand->brand_name))
-                        ->size(TextColumn\TextColumnSize::Large)
-                        ->weight(FontWeight::Bold),
-
-                        Tables\Columns\Layout\Split::make([
-
-                            TextColumn::make('prod_price')
-                            ->label('Price')
-                            ->sortable()
-                            ->money('PHP'),
-
-                            TextColumn::make('prod_qty')
-                            ->label('Qty.')
-                            ->badge()
-                            ->color('success')
-                            ->weight(FontWeight::Bold)
-                            ->tooltip('Product stock quantity'),
-
-                        ]),
-                    ]),
-                ])->space(3),
-                Tables\Columns\Layout\Panel::make([
-                    Tables\Columns\Layout\Split::make([
-
-                        TextColumn::make('productCategories.prod_cat_name')
-                        ->badge()
-                        ->color('warning')
-                        ->formatStateUsing(fn (string $state) : string => ucwords($state)),
-
-                    ]),
-                ])->collapsible(),
+                TextColumn::make('created_at')
+                ->date('F j, Y, g:i a')
+                ->sortable()
+                ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->contentGrid([
-                'md' => 2,
-                'xl' => 3,
-            ])
-            ->paginated([
-                9,
-                18,
-                36,
-                'all',
-            ])
+
             ->filters([
                 //
             ])
@@ -560,7 +537,7 @@ class ProductResource extends Resource
 
     public static function infolist(Infolist $infolist): Infolist
     {
-        return $infolist 
+        return $infolist
             ->schema([
                 InfoSection::make()
                 ->schema([

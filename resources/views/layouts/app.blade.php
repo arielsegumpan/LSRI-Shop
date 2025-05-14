@@ -29,5 +29,23 @@
 
         <livewire:partials.footer />
         @livewireScripts
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        {{-- <script>
+            document.addEventListener('livewire:initialized', () => {
+                Livewire.on('cart-updated', () => {
+                    fetch('/livewire/cart-items')
+                        .then(response => response.text())
+                        .then(html => {
+                            const tempDiv = document.createElement('div');
+                            tempDiv.innerHTML = html;
+                            const cartCountElement = tempDiv.querySelector('.cart-count');
+                            const navigationCartCount = document.querySelector('button[aria-controls="hs-offcanvas-right"] .cart-count'); // Target the span within the button
+                            if (cartCountElement && navigationCartCount) {
+                                navigationCartCount.textContent = cartCountElement.textContent;
+                            }
+                        });
+                });
+            });
+        </script> --}}
     </body>
 </html>

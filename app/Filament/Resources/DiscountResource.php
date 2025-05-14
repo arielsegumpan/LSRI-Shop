@@ -43,7 +43,7 @@ class DiscountResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-percent-badge';
 
-    protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::End;
+    protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 
     public static function form(Form $form): Form
     {
@@ -227,7 +227,7 @@ class DiscountResource extends Resource
     {
         return $page->generateNavigationItems([
             Pages\ViewDiscount::class,
-            Pages\EditDiscount::class,
+            // Pages\EditDiscount::class,
         ]);
     }
 
@@ -248,11 +248,6 @@ class DiscountResource extends Resource
                             ->grow(false),
 
                             InfoG::make([
-                                TextEntry::make('discount_name')
-                                ->label('Discount')
-                                ->size(TextEntry\TextEntrySize::Large)
-                                ->weight(FontWeight::Bold)
-                                ->columnSpanFull(),
 
                                 TextEntry::make('discount_name')
                                 ->label('Discount')

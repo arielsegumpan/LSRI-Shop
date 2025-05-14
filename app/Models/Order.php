@@ -86,7 +86,6 @@ class Order extends Model
     //         ->withTimestamps();
     // }
 
-
     public function orderItems() : HasMany
     {
         return $this->hasMany(OrderItem::class);
