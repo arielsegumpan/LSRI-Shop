@@ -5,20 +5,20 @@
             <p class="mt-4 md:text-lg text-gray-600 dark:text-neutral-400">{{ __('Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.') }}</p>
         </div>
 
-        <div class="grid grid-flow-row-dense grid-cols-3 grid-rows-3 md:gap-x-6">
+        <div class="grid grid-flow-row-dense grid-cols-3 grid-rows-1 md:gap-x-6 h-auto">
             <!-- Selected Items-->
             <div class="col-span-3 md:col-span-2">
                 @if (!empty($cart))
                     <div wire:ignore.self class="overflow-x-auto" >
                         <table class="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
-                            <thead class="divide-y divide-gray-200 dark:divide-neutral-700">
+                            <thead class="divide-y divide-gray-700 dark:divide-neutral-700">
                                 <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider dark:text-neutral-300"></th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider dark:text-neutral-300">Product</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider dark:text-neutral-300">Price</th>
-                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-600 uppercase tracking-wider dark:text-neutral-300">Quantity</th>
-                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-600 uppercase tracking-wider dark:text-neutral-300">Subtotal</th>
-                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-600 uppercase tracking-wider dark:text-neutral-300">Action</th>
+                                    <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500"></th>
+                                    <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Product</th>
+                                    <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Price</th>
+                                    <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Quantity</th>
+                                    <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Subtotal</th>
+                                    <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Action</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200 dark:bg-neutral-900 dark:divide-neutral-700">
@@ -90,6 +90,42 @@
                     </div>
 
                     <div class="mt-6 border-t border-gray-200 dark:border-neutral-700 pt-4 flex justify-between font-bold text-lg">
+                        <div class="flex flex-col w-full mt-6 lg:mt-10  ">
+                            <div class="-m-1.5 overflow-x-auto">
+                                <div class="p-1.5 min-w-full inline-block align-middle">
+                                <div class="overflow-hidden">
+                                    <table class="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+
+                                    <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-500 text-start">{{ __('Subtotal') }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200 text-end">₱{{ number_format($total, 2) }}</td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-500 text-start">{{ __('Shipping') }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200 text-end">₱0.00</td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-500 text-start">{{ __('Tax 12%') }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200 text-end">₱0.00</td>
+
+                                        </tr>
+
+
+
+                                    </tbody>
+                                    </table>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 border-t border-gray-200 dark:border-neutral-700 pt-4 flex justify-between font-bold text-lg">
                         <span class="text-gray-900 dark:text-white">Total:</span>
                         <span class="text-gray-900 dark:text-white">₱{{ number_format($total, 2) }}</span>
                     </div>
@@ -111,6 +147,9 @@
                     </a>
                     </div>
                 @endif
+
+
+
             </div>
             <!-- End of Selected Items-->
 
@@ -152,6 +191,7 @@
                                 <h1 class="text-lg font-bold text-gray-900 dark:text-white">{{ __('Payment Method') }}</h1>
                             </div>
                         </div>
+
                         <div class="p-4 md:p-5">
 
                             <div class="py-6 first:pt-0 last:pb-0 first:border-transparent dark:border-neutral-700 dark:first:border-transparent">
@@ -310,15 +350,15 @@
                                     <div class="bg-white border border-gray-200 rounded-lg dark:bg-neutral-700 dark:border-neutral-700" data-hs-input-number="">
                                     <div class="w-full flex justify-between items-center gap-x-1">
                                         <div class="grow py-2 px-3">
-                                        <input wire:model.blur="customer_amount" id="customer_amount"  class="w-full p-0 bg-transparent border-0 text-gray-800 focus:ring-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none dark:text-white" style="-moz-appearance: textfield;" type="number" aria-roledescription="Number field" value="100" data-hs-input-number-input="100">
+                                        <input wire:model.blur="customer_amount" id="customer_amount"  class="w-full p-0 bg-transparent border-0 text-gray-800 focus:ring-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none dark:text-white" style="-moz-appearance: textfield;" type="number" aria-roledescription="Number field" value="{{ $this->customer_amount }}" data-hs-input-number-input="">
                                         </div>
                                         <div class="flex items-center -gap-y-px divide-x divide-gray-200 border-s border-gray-200 dark:divide-neutral-700 dark:border-neutral-700">
-                                        <button type="button" class="size-10 inline-flex justify-center items-center gap-x-2 text-sm font-medium last:rounded-e-lg bg-white text-gray-800 hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" aria-label="Decrease" data-hs-input-number-decrement="100">
+                                        <button wire:click.prevent="decCustAmount" type="button" class="size-10 inline-flex justify-center items-center gap-x-2 text-sm font-medium last:rounded-e-lg bg-white text-gray-800 hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" aria-label="Decrease" data-hs-input-number-decrement="">
                                             <svg class="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                             <path d="M5 12h14"></path>
                                             </svg>
                                         </button>
-                                        <button type="button" class="size-10 inline-flex justify-center items-center gap-x-2 text-sm font-medium last:rounded-e-lg bg-white text-gray-800 hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" aria-label="Increase" data-hs-input-number-increment="100">
+                                        <button wire:click.prevent="incCustAmount" type="button" class="size-10 inline-flex justify-center items-center gap-x-2 text-sm font-medium last:rounded-e-lg bg-white text-gray-800 hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" aria-label="Increase" data-hs-input-number-increment="">
                                             <svg class="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                             <path d="M5 12h14"></path>
                                             <path d="M12 5v14"></path>
@@ -335,6 +375,17 @@
 
 
                         </div>
+                    </div>
+
+                    <div class="mt-2">
+                        <button  class="inline-block w-full px-5 py-3 text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:bg-red-700 rounded-lg inline-flex items-center gap-x-2 text-center align-middle justify-center">
+
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                            </svg>
+
+                            {{ __('Checkout') }}
+                        </button>
                     </div>
                 </div>
             </div>

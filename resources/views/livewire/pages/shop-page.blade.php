@@ -47,7 +47,8 @@
 
             <!-- Card -->
             <div class="flex flex-col mb-4 border shadow-sm bg-neutral-200 rounded-xl dark:bg-neutral-900 border-neutral-300 dark:border-neutral-700 dark:shadow-neutral-700/70">
-                <a class="px-5 pt-5" href="{{ route('page.shop.single', $product->prod_slug) }}">
+
+                <a class="px-5 py-5" href="{{ route('page.shop.single', $product->prod_slug) }}">
                     <div class="p-4 md:p-0 mb-4">
                         <span class=" inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800 dark:bg-teal-800/30 dark:text-teal-500">
                             {{ $product->prod_sku }}
@@ -73,9 +74,6 @@
                     <img class="w-full h-[250px] md:h-[230px] lg:h-[200px] object-contain rounded-b-xl" src="{{ asset(Storage::url($product->prod_ft_image)) }}" alt="{{ $product->prod_slug }}">
                 </a>
 
-                <div class="p-5">
-                     <livewire:shop-partials.add-to-cart :product="$product" :key="$product->id">
-                </div>
             </div>
             <!-- End Card -->
 

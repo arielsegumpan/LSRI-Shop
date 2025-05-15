@@ -330,9 +330,6 @@
                             <img class="w-full h-[250px] md:h-[170px] lg:h-[180px] object-contain rounded-b-xl" src="{{ asset(Storage::url($product->prod_ft_image)) }}" alt="{{ $product->prod_slug }}">
                         </a>
 
-                        <div class="p-5">
-                            <livewire:shop-partials.add-to-cart :product="$product" :key="$product->id">
-                        </div>
                     </div>
                     <!-- End Card -->
 

@@ -10,7 +10,6 @@
                                     <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">{{ __('Image') }}</th>
                                     <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">{{ __('Item') }}</th>
                                     <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">{{ __('Quantity') }}</th>
-                                    {{-- <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">{{ __('Price') }}</th> --}}
                                     <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">{{ __('Action') }}</th>
                                 </tr>
                             </thead>
@@ -28,7 +27,7 @@
                                             </div>
                                             @endif
                                         </td>
-                                        <td class="px-6 py-4 text-sm text-gray-800 dark:text-neutral-200">{{ $item['name'] }} - ( <span class="font-semibold">₱ {{ number_format($item['price'], 2) }}</span> )</td>
+                                        <td class="px-6 py-4 text-sm text-gray-800 dark:text-neutral-200">{{ $item['name'] }} - ( <span class="font-semibold">{{ __('₱') }} {{ number_format($item['price'], 2) }}</span> )</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
                                             {{ $item['quantity'] }} x
                                         </td>

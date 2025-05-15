@@ -20,7 +20,7 @@
 
         @livewireStyles
     </head>
-    <body class="bg-[#f7f7f7] dark:bg-neutral-900 antialiased">
+    <body class="bg-[#f5f0ed] dark:bg-neutral-900 antialiased">
         <livewire:partials.navigation />
 
         <main class="max-w-[85rem] mx-auto">

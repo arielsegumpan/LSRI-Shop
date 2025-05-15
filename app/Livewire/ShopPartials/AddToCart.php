@@ -13,6 +13,7 @@ class AddToCart extends Component
 
     public $product;
     public $quantity = 1;
+    public $maxQuantity;
 
     #[Locked]
     public $id;
@@ -20,10 +21,35 @@ class AddToCart extends Component
     public function mount($product)
     {
         $this->product = $product;
+        $this->maxQuantity = $product->prod_qty;
+
     }
+
+    public function incQuantity()
+    {
+        if ($this->quantity < $this->maxQuantity) {
+            $this->quantity += 1;
+        }
+    }
+
+    public function decQuantity()
+    {
+        if ($this->quantity > 1) {
+            $this->quantity--;
+        }
+    }
+
 
     public function addToCart()
     {
+        if($this->quantity > $this->maxQuantity){
+            $this->notify(
+                'Exceed in the maximum quantity! Product max quantity is '.$this->maxQuantity,
+                'error',
+                3000
+            );
+            return $this->quantity = 1;
+        }
         $cart = session()->get('cart', []);
 
         $this->id = $this->product->id;

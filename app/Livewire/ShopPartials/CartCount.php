@@ -13,7 +13,8 @@ class CartCount extends Component
     public function mount()
     {
         $cart = session()->get('cart', []);
-        $this->count = collect($cart)->sum('quantity');
+
+        $this->count = count($cart);
 
     }
 

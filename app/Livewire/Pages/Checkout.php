@@ -68,6 +68,30 @@ class Checkout extends Component
        return $this->removeCartItem($id);
     }
 
+    public function incCustAmount()
+    {
+        $this->customer_amount += 100;
+
+    }
+
+    public function decCustAmount()
+    {
+        if ($this->customer_amount > 100) {
+            $this->customer_amount -= 100;
+        }
+    }
+
+
+    public function checkAmount()
+    {
+        if ($this->customer_amount < $this->total) {
+            $this->dispatch('checkout-updated');
+           return $this->notify('Insufficient amount', 'error', 3000);
+        }
+
+
+    }
+
     #[Layout('layouts.app')]
     public function render()
     {
