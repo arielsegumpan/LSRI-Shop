@@ -23,7 +23,7 @@
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200 dark:bg-neutral-900 dark:divide-neutral-700">
                                 @foreach ($cart as $productId => $item)
-                                    <tr>
+                                    <tr wire:key="cart-item-checkout-{{ $productId }}">
                                         <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">
                                             <img class="w-auto h-14 object-contain" src="{{ asset(Storage::url($item['image'])) }}" alt="{{ $item['name'] }}">
                                         </td>
@@ -31,7 +31,16 @@
                                             {{ $item['name'] }}
                                         </td>
                                         <td class="px-6 py-4 text-sm text-gray-700 dark:text-neutral-300">
-                                            ₱{{ number_format($item['price'], 2) }}
+
+                                            @if ($item['has_discount'])
+                                                <p class="flex flex-col items-start justify-start align-middle">
+                                                    <span class="line-through text-gray-500">₱{{ number_format($item['original_price'], 2) }}</span>
+                                                    <span class="text-gray-900 dark:text-white font-bold">₱{{ number_format($item['price'], 2) }}</span>
+                                                    <span class="text-xs text-red-500">({{ $item['discount_label']}})</span>
+                                                </p>
+                                            @else
+                                                <p class="font-bold">₱{{ number_format($item['price'], 2) }}</p>
+                                            @endif
                                         </td>
                                         <td class="px-6 py-4 text-sm text-center">
                                             <!-- Input Number -->
@@ -99,7 +108,7 @@
                                     <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
                                         <tr>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-500 text-start">{{ __('Subtotal') }}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200 text-end">₱{{ number_format($total, 2) }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200 text-end">₱{{ number_format($sub_total, 2) }}</td>
 
                                         </tr>
 
@@ -111,7 +120,7 @@
 
                                         <tr>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-500 text-start">{{ __('Tax 12%') }}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200 text-end">₱0.00</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200 text-end">₱{{ number_format($tax, 2) }}</td>
 
                                         </tr>
 

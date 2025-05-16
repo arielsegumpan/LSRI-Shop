@@ -22,7 +22,6 @@ class AddToCart extends Component
     {
         $this->product = $product;
         $this->maxQuantity = $product->prod_qty;
-
     }
 
     public function incQuantity()

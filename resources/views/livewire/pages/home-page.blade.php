@@ -30,7 +30,7 @@
 
                 @foreach ($getFtProds as $getFtProd)
                 <!-- Item -->
-                <div class="hs-carousel-slide">
+                <div wire:key="card-carousel-featured-{{ $getFtProd['id'] }}" class="hs-carousel-slide">
                     {{-- <div class="h-120 md:h-[calc(100vh-250px)]  flex flex-col bg-[url('{{ asset(Storage::url($getFtProd->prod_ft_image )) }}')] bg-cover bg-center bg-no-repeat"> --}}
                     <div
                         class="h-120 md:h-[calc(100vh-250px)] flex flex-col bg-cover bg-center bg-no-repeat"
@@ -294,12 +294,12 @@
             "isDraggable": true
         }' class="relative">
             <div class="w-full overflow-hidden rounded-lg hs-carousel">
-                <div class="relative -mx-1 min-h-[33rem]  max-h-[33rem]">
+                <div class="relative -mx-1 min-h-[28rem]  max-h-[28rem]">
                     <div class="absolute top-0 bottom-0 flex transition-transform duration-700 opacity-0 hs-carousel-body start-0 flex-nowrap cursor-grab hs-carousel-dragging:transition-none gap-2  hs-carousel-dragging:cursor-grabbing">
 
                     @foreach ($newProducts as $product)
                     <!-- Card -->
-                    <div class="hs-carousel-slide flex flex-col border bg-gray-300 shadow-sm bg-neutral-200 rounded-xl dark:bg-neutral-700 border-neutral-300 dark:border-neutral-700 dark:shadow-neutral-700/70">
+                    <div wire:key="card-carousel-slide-{{ $product->id }}" class="hs-carousel-slide flex flex-col border bg-gray-300 shadow-sm bg-neutral-200 rounded-xl dark:bg-neutral-700 border-neutral-300 dark:border-neutral-700 dark:shadow-neutral-700/70">
                         <a class="px-5 pt-5" href="{{ route('page.shop.single', $product->prod_slug) }}">
                             <div class="p-4 md:p-5">
                                 <span class=" inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800 dark:bg-teal-800/30 dark:text-teal-500">
@@ -308,6 +308,18 @@
 
                                 <h3 class="text-lg font-bold text-gray-800 dark:text-white py-1.5">
                                     {{ $product->prod_name }}
+
+                                    {{-- Show discount badge --}}
+                                    <span class="inline-block bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full mb-2 ms-2">
+                                        @php
+                                            $discount = $product->discounts->first()->pivot;
+
+                                            echo $discount->discount_type === 'percentage'
+                                                ? number_format($discount->discount_value,0) . '% OFF'
+                                                : '₱' . number_format($discount->discount_value, 0) . ' OFF';
+                                        @endphp
+                                    </span>
+
                                 </h3>
 
                                 <p class="text-sm text-gray-500 dark:text-neutral-500">
@@ -316,12 +328,19 @@
 
                                 <!-- GROUPS -->
                                 <div class="flex flex-row items-center justify-start mt-3 align-middle">
-                                    <h5 class="font-bold text-gray-500 dark:text-white">
-                                        ₱ {{ $product->prod_price }} -
-                                        <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-lg text-sm font-bold bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-500">
-                                            {{ $product->prod_qty }}
-                                        </span>
-                                    </h5>
+                                    @if($product->discounts->isNotEmpty() && $product->discounted_price < $product->prod_price)
+
+                                        {{-- Show prices --}}
+                                        <div>
+                                            <span class="text-neutral-400 line-through mr-2">₱{{ number_format($product->prod_price, 2) }}</span>
+                                            <span class="font-bold text-gray-500 dark:text-white">₱{{ number_format($product->discounted_price, 2) }}</span>
+                                        </div>
+                                    @else
+                                        {{-- No discount --}}
+                                        <div>
+                                            <span class="text-black font-bold">₱{{ number_format($product->prod_price, 2) }}</span>
+                                        </div>
+                                    @endif
 
                                 </div>
                                 <!-- END GROUP -->

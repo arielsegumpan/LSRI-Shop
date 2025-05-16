@@ -55,20 +55,28 @@
         </div>
 
         <!-- Grid -->
-        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
 
-            @foreach ($productCategories->products as $product )
+            @forelse ($getProductCategories->products as $product)
 
             <!-- Card -->
-            <div class="flex flex-col mb-4 bg-white border shadow-sm rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
-                <a class="px-5 pt-5" href="{{ route('page.shop.single', $product->prod_slug) }}">
-                    <div class="p-4 md:p-5">
+            <div wire:key="card-product-{{ $product->id }}" class="flex flex-col mb-4 border shadow-sm bg-neutral-200 rounded-xl dark:bg-neutral-900 border-neutral-300 dark:border-neutral-700 dark:shadow-neutral-700/70">
+
+                <a class="px-5 py-5" href="{{ route('page.shop.single', $product->prod_slug) }}">
+                    <div class="p-4 md:p-0 mb-4">
                         <span class=" inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800 dark:bg-teal-800/30 dark:text-teal-500">
                             {{ $product->prod_sku }}
                         </span>
 
                         <h3 class="text-lg font-bold text-gray-800 dark:text-white py-1.5">
                             {{ $product->prod_name }}
+
+                            @if($product->formatted_discount)
+                                {{-- Show discount badge --}}
+                                <span class="inline-block bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full ms-2">
+                                     {{ $product->formatted_discount }}
+                                </span>
+                            @endif
                         </h3>
 
                         <p class="text-sm text-gray-500 dark:text-neutral-500">
@@ -77,35 +85,40 @@
 
                         <!-- GROUPS -->
                         <div class="flex flex-row items-center justify-between mt-3 align-middle">
-                            <h5 class="font-bold text-gray-500 dark:text-white">
-                                ₱ {{ $product->prod_price}} - <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-lg text-sm font-bold bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-500"> {{ $product->prod_qty }} </span>
-                            </h5>
+                            @if($product->discounts->isNotEmpty() && $product->discounted_price < $product->prod_price)
 
-
+                                {{-- Show prices --}}
+                                <div>
+                                    <span class="text-neutral-400 line-through mr-2">₱{{ number_format($product->prod_price, 2) }}</span>
+                                    <span class="font-bold text-gray-500 dark:text-white">₱{{ number_format($product->discounted_price, 2) }}</span>
+                                </div>
+                                @else
+                                    {{-- No discount --}}
+                                    <div>
+                                        <span class="text-black font-bold">₱{{ number_format($product->prod_price, 2) }}</span>
+                                    </div>
+                            @endif
                         </div>
                         <!-- EBD GROUP -->
 
                     </div>
-                    <img class="w-full h-[250px] md:h-[230px] lg:h-[350px] object-cover rounded-b-xl" src="{{ asset(Storage::url($product->productImages[0]->url)) }}" alt="{{ $product->prod_slug }}">
+                    <img class="w-full h-[250px] md:h-[230px] lg:h-[200px] object-contain rounded-b-xl" src="{{ asset(Storage::url($product->prod_ft_image)) }}" alt="{{ $product->prod_slug }}">
                 </a>
 
-                <div class="p-5">
-                    <button type="button" class="inline-flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-center text-white align-middle bg-red-600 border border-transparent rounded-lg gap-x-2 hover:bg-red-700 focus:outline-none focus:bg-red-700 disabled:opacity-50 disabled:pointer-events-none">
-                        Add to cart
-                        <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="m5 11 4-7"></path>
-                            <path d="m19 11-4-7"></path>
-                            <path d="M2 11h20"></path>
-                            <path d="m3.5 11 1.6 7.4a2 2 0 0 0 2 1.6h9.8c.9 0 1.8-.7 2-1.6l1.7-7.4"></path>
-                            <path d="m9 11 1 9"></path>
-                            <path d="M4.5 15.5h15"></path>
-                            <path d="m15 11-1 9"></path>
-                        </svg>
-                    </button>
-                </div>
             </div>
             <!-- End Card -->
-            @endforeach()
+
+            @empty
+            <div class="container w-full mx-auto text-center col-span-full">
+
+                <svg class="flex items-center justify-center flex-shrink-0 w-auto mx-auto text-red-500 align-middle h-14" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                </svg>
+
+                <h1 class="mt-4 text-2xl text-gray-800 dark:text-white">{{ __('No Products Created') }}</h1>
+
+            </div>
+            @endforelse
 
 
         </div>

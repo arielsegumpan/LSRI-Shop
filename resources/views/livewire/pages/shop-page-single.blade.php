@@ -32,7 +32,7 @@
                                             [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
 
                                             @foreach($product->productImages as $image)
-                                            <div class="hs-carousel-pagination-item shrink-0 border-gray-300 rounded-md overflow-hidden cursor-pointer w-[80px] h-[80px] hs-carousel-active:border-red-500">
+                                            <div  wire:key="product-img-{{ $image->id }}"  class="hs-carousel-pagination-item shrink-0 border-gray-300 rounded-md overflow-hidden cursor-pointer w-[80px] h-[80px] hs-carousel-active:border-red-500">
                                                 <div class="flex justify-center h-full p-2 bg-gray-100 dark:bg-neutral-900">
                                                     <img class="object-container w-auto h-full" src="{{ asset(Storage::url($image->url)) }}" alt="{{ $product->prod_slug }}">
                                                 </div>
@@ -47,7 +47,7 @@
                                         <div class="absolute top-0 bottom-0 flex transition-transform duration-700 opacity-0 hs-carousel-body start-0 flex-nowrap">
 
                                             @foreach($product->productImages as $image)
-                                            <div class="hs-carousel-slide">
+                                            <div wire:key="product-img-slide-{{ $image->id }}" class="hs-carousel-slide">
                                                 <div class="flex justify-center h-full p-6 bg-gray-100 dark:bg-neutral-900">
                                                     <img class="object-contain w-full h-full size-full start-0 rounded-xl" src="{{ asset(Storage::url($image->url)) }}" alt="{{ $product->prod_slug }}">
                                                 </div>
@@ -87,15 +87,45 @@
 
                         <div>
                             <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800 dark:bg-teal-800/30 dark:text-teal-500 mb-4">{{ $product->prod_sku }}</span>
-                            <h1 class="text-4xl font-bold text-gray-800 dark:text-white">{{ $product->prod_name }}</h1>
+
+                            <div class="flex flex-wrap flex-col md:flex-row items-center align-middle">
+                                <h1 class="text-4xl font-bold text-gray-800 dark:text-white">{{ $product->prod_name }}</h1>
+                                @if($product->formatted_discount)
+                                {{-- Show discount badge --}}
+                                <span class="inline-block bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full ms-2">
+                                     {{ $product->formatted_discount }}
+                                </span>
+                                @endif
+                            </div>
 
                             <h6 class="mt-2 text-gray-500 text-md dark:text-neutral-500">{{ $product->brand->brand_name }}</h6>
 
-                            <h2 class="text-3xl font-bold text-gray-800 dark:text-white">₱ {{ $product->prod_price }}</h2>
+
+
+                                <!-- GROUPS -->
+                                <div class="flex flex-row items-center justify-between mt-3 align-middle">
+                                    @if($product->discounts->isNotEmpty() && $product->discounted_price < $product->prod_price)
+
+                                        {{-- Show prices --}}
+                                        <div>
+                                            <h2 class="text-3xl font-bold text-gray-800 dark:text-white">
+                                                <span class="text-neutral-400 line-through mr-2">₱{{ number_format($product->prod_price, 2) }}</span>
+                                                <span class="font-bold text-gray-500 dark:text-white">₱{{ number_format($product->discounted_price, 2) }}</span>
+                                            </h2>
+                                        </div>
+                                        @else
+                                            {{-- No discount --}}
+                                            <div>
+                                                <span class="text-black font-bold">₱{{ number_format($product->prod_price, 2) }}</span>
+                                            </div>
+                                    @endif
+                                </div>
+                                <!-- EBD GROUP -->
+
 
                             <div class="flex mt-4 gap-x-2">
                                 @forelse ( $product->productCategories as $prodCat)
-                                <a href="{{ route('page.shop.category', $prodCat->prod_cat_slug) }}">
+                                <a wire:key="product-cat-{{ $prodCat->id }}"  href="{{ route('page.shop.category', $prodCat->prod_cat_slug) }}">
                                     <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-800/30 dark:text-yellow-500">{{ $prodCat->prod_cat_name }}</span>
                                 </a>
                                 @empty
@@ -133,7 +163,7 @@
                             <div class="grid gap-2 lg:grid-cols-2">
                                 @forelse ($related_products as $related_product )
 
-                                <div>
+                                <div wire:key="related-product-{{ $related_product->id }}" >
                                     <!-- Media -->
                                     <a class="flex flex-col items-center group gap-x-6 focus:outline-none" href="{{ route('page.shop.single', ['prod_slug' => $related_product->prod_slug]) }}">
                                         <div>

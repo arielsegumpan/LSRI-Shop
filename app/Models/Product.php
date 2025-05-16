@@ -87,4 +87,44 @@ class Product extends Model
         return $this->hasMany(CartItem::class, 'product_id', 'id');
     }
 
+    public function getDiscountedPriceAttribute()
+    {
+        $activeDiscount = $this->discounts->first();
+
+        if (!$activeDiscount) {
+            return $this->prod_price;
+        }
+
+        $type = $activeDiscount->pivot->discount_type;
+        $value = $activeDiscount->pivot->discount_value;
+
+        if ($type === 'percentage') {
+            return round($this->prod_price - ($this->prod_price * ($value / 100)), 2);
+        }
+
+        if ($type === 'fixed') {
+            return max(round($this->prod_price - $value, 2), 0);
+        }
+
+        return $this->prod_price;
+    }
+
+
+    public function getFormattedDiscountAttribute()
+    {
+        $activeDiscount = $this->discounts->first();
+
+        if (!$activeDiscount) {
+            return null;
+        }
+
+        $type = $activeDiscount->pivot->discount_type;
+        $value = $activeDiscount->pivot->discount_value;
+
+        return $type === 'percentage'
+            ? number_format($value, 0) . '% OFF'
+            : '₱' . number_format($value, 2) . ' OFF';
+    }
+
+
 }

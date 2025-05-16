@@ -19,6 +19,11 @@ class ShopPageSingle extends Component
             'brand:id,brand_name',
             'productCategories' => function($query) {
                 $query->where('is_visible', 1); // Ensures only visible categories are retrieved
+            },
+            'discounts' => function ($query) {
+                $query->select('discounts.id', 'discount_name', 'starts_at', 'ends_at')
+                      ->where('starts_at', '<=', now())
+                      ->where('ends_at', '>=', now());
             }
         ])
         ->where('prod_slug', $prod_slug)

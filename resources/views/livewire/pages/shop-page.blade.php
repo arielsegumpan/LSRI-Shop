@@ -46,7 +46,7 @@
             @forelse ($products as $product )
 
             <!-- Card -->
-            <div class="flex flex-col mb-4 border shadow-sm bg-neutral-200 rounded-xl dark:bg-neutral-900 border-neutral-300 dark:border-neutral-700 dark:shadow-neutral-700/70">
+            <div wire:key="card-product-{{ $product->id }}" class="flex flex-col mb-4 border shadow-sm bg-neutral-200 rounded-xl dark:bg-neutral-900 border-neutral-300 dark:border-neutral-700 dark:shadow-neutral-700/70">
 
                 <a class="px-5 py-5" href="{{ route('page.shop.single', $product->prod_slug) }}">
                     <div class="p-4 md:p-0 mb-4">
@@ -56,6 +56,13 @@
 
                         <h3 class="text-lg font-bold text-gray-800 dark:text-white py-1.5">
                             {{ $product->prod_name }}
+
+                            @if($product->formatted_discount)
+                                {{-- Show discount badge --}}
+                                <span class="inline-block bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full ms-2">
+                                     {{ $product->formatted_discount }}
+                                </span>
+                            @endif
                         </h3>
 
                         <p class="text-sm text-gray-500 dark:text-neutral-500">
@@ -64,9 +71,19 @@
 
                         <!-- GROUPS -->
                         <div class="flex flex-row items-center justify-between mt-3 align-middle">
-                            <h5 class="font-bold text-gray-500 dark:text-white">
-                                ₱ {{ $product->prod_price}} - <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-lg text-sm font-bold bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-500"> {{ $product->prod_qty }} {{ __('left') }} </span>
-                            </h5>
+                            @if($product->discounts->isNotEmpty() && $product->discounted_price < $product->prod_price)
+
+                                {{-- Show prices --}}
+                                <div>
+                                    <span class="text-neutral-400 line-through mr-2">₱{{ number_format($product->prod_price, 2) }}</span>
+                                    <span class="font-bold text-gray-500 dark:text-white">₱{{ number_format($product->discounted_price, 2) }}</span>
+                                </div>
+                                @else
+                                    {{-- No discount --}}
+                                    <div>
+                                        <span class="text-black font-bold">₱{{ number_format($product->prod_price, 2) }}</span>
+                                    </div>
+                            @endif
                         </div>
                         <!-- EBD GROUP -->
 
