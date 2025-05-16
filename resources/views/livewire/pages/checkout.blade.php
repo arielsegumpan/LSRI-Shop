@@ -64,6 +64,7 @@
                                                         min="1"
                                                         value="{{ $item['quantity'] }}"
                                                         wire:change="updateQuantity('{{ $productId }}', $event.target.value)"
+                                                        readonly
                                                     >
 
                                                     <!-- Increase -->
@@ -181,7 +182,7 @@
                             <p class="mt-2 text-gray-500 dark:text-neutral-400">
                             With supporting text below as a natural lead-in to additional content.
                             </p>
-                            <a class="mt-3 inline-flex items-center gap-x-1 text-sm font-semibold rounded-lg border border-transparent text-blue-600 decoration-2 hover:text-blue-700 hover:underline focus:underline focus:outline-hidden focus:text-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-600 dark:focus:text-blue-600" href="#">
+                            <a class="mt-3 inline-flex items-center gap-x-1 text-sm font-semibold rounded-lg border border-transparent text-red-600 decoration-2 hover:text-red-700 hover:underline focus:underline focus:outline-hidden focus:text-red-700 disabled:opacity-50 disabled:pointer-events-none dark:text-red-500 dark:hover:text-red-600 dark:focus:text-red-600" href="#">
                             Card link
                             <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="m9 18 6-6-6-6"></path>
@@ -347,42 +348,6 @@
                                     </div>
                                 </div>
                             @endif
-
-                            @if($customer_payment_method === 'card' || $customer_payment_method === 'gcash' || $customer_payment_method === 'paymaya' || $customer_payment_method === 'grab_pay')
-                            <div class="py-6 border-t border-gray-200 first:pt-0 last:pb-0 first:border-transparent dark:border-neutral-700 dark:first:border-transparent max-w-2xl mx-auto">
-                                <label class="inline-block text-sm font-medium dark:text-white">
-                                {{'Amount'}}
-                                </label>
-
-                                <div class="mt-2 space-y-3">
-                                    <!-- Input Number -->
-                                    <div class="bg-white border border-gray-200 rounded-lg dark:bg-neutral-700 dark:border-neutral-700" data-hs-input-number="">
-                                    <div class="w-full flex justify-between items-center gap-x-1">
-                                        <div class="grow py-2 px-3">
-                                        <input wire:model.blur="customer_amount" id="customer_amount"  class="w-full p-0 bg-transparent border-0 text-gray-800 focus:ring-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none dark:text-white" style="-moz-appearance: textfield;" type="number" aria-roledescription="Number field" value="{{ $this->customer_amount }}" data-hs-input-number-input="">
-                                        </div>
-                                        <div class="flex items-center -gap-y-px divide-x divide-gray-200 border-s border-gray-200 dark:divide-neutral-700 dark:border-neutral-700">
-                                        <button wire:click.prevent="decCustAmount" type="button" class="size-10 inline-flex justify-center items-center gap-x-2 text-sm font-medium last:rounded-e-lg bg-white text-gray-800 hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" aria-label="Decrease" data-hs-input-number-decrement="">
-                                            <svg class="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M5 12h14"></path>
-                                            </svg>
-                                        </button>
-                                        <button wire:click.prevent="incCustAmount" type="button" class="size-10 inline-flex justify-center items-center gap-x-2 text-sm font-medium last:rounded-e-lg bg-white text-gray-800 hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" aria-label="Increase" data-hs-input-number-increment="">
-                                            <svg class="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M5 12h14"></path>
-                                            <path d="M12 5v14"></path>
-                                            </svg>
-                                        </button>
-                                        </div>
-                                    </div>
-                                    </div>
-                                    @error('customer_amount') <span class="text-sm text-red-600">{{ $message }}</span> @enderror
-                                    <!-- End Input Number -->
-                                </div>
-                            </div>
-                            @endif
-
-
                         </div>
                     </div>
 

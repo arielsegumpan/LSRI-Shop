@@ -19,7 +19,6 @@ class Checkout extends Component
     public float $sub_total = 0;
     public float $tax = 0;
 
-
     public $customer_amount = 100;
     public $customer_payment_method = '';
 

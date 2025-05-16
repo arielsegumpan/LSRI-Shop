@@ -40,74 +40,161 @@
         <!-- End Sort menu -->
 
 
-        <!-- Grid -->
-        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+         <div class="grid gap-6 sm:grid-cols-2 md:grid-cols-5">
+            <div class="col-span-5 md:col-span-4">
+                <!-- Grid -->
+                <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-6">
 
-            @forelse ($products as $product )
+                    @forelse ($products as $product )
 
-            <!-- Card -->
-            <div wire:key="card-product-{{ $product->id }}" class="flex flex-col mb-4 border shadow-sm bg-neutral-200 rounded-xl dark:bg-neutral-900 border-neutral-300 dark:border-neutral-700 dark:shadow-neutral-700/70">
+                    <!-- Card -->
+                    <div wire:key="card-product-{{ $product->id }}" class="flex flex-col mb-4 border shadow-sm bg-neutral-200 rounded-xl dark:bg-neutral-900 border-neutral-300 dark:border-neutral-700 dark:shadow-neutral-700/70 col-span-4 md:col-span-2">
 
-                <a class="px-5 py-5" href="{{ route('page.shop.single', $product->prod_slug) }}">
-                    <div class="p-4 md:p-0 mb-4">
-                        <span class=" inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800 dark:bg-teal-800/30 dark:text-teal-500">
-                            {{ $product->prod_sku }}
-                        </span>
-
-                        <h3 class="text-lg font-bold text-gray-800 dark:text-white py-1.5">
-                            {{ $product->prod_name }}
-
-                            @if($product->formatted_discount)
-                                {{-- Show discount badge --}}
-                                <span class="inline-block bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full ms-2">
-                                     {{ $product->formatted_discount }}
+                        <a class="px-5 py-5" href="{{ route('page.shop.single', $product->prod_slug) }}">
+                            <div class="p-4 md:p-0 mb-4">
+                                <span class=" inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800 dark:bg-teal-800/30 dark:text-teal-500">
+                                    {{ $product->prod_sku }}
                                 </span>
-                            @endif
-                        </h3>
 
-                        <p class="text-sm text-gray-500 dark:text-neutral-500">
-                            {{ $product->brand->brand_name }}
-                        </p>
+                                <h3 class="text-lg font-bold text-gray-800 dark:text-white py-1.5">
+                                    {{ $product->prod_name }}
 
-                        <!-- GROUPS -->
-                        <div class="flex flex-row items-center justify-between mt-3 align-middle">
-                            @if($product->discounts->isNotEmpty() && $product->discounted_price < $product->prod_price)
+                                    @if($product->formatted_discount)
+                                        {{-- Show discount badge --}}
+                                        <span class="inline-block bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full ms-2">
+                                            {{ $product->formatted_discount }}
+                                        </span>
+                                    @endif
+                                </h3>
 
-                                {{-- Show prices --}}
-                                <div>
-                                    <span class="text-neutral-400 line-through mr-2">₱{{ number_format($product->prod_price, 2) }}</span>
-                                    <span class="font-bold text-gray-500 dark:text-white">₱{{ number_format($product->discounted_price, 2) }}</span>
+                                <p class="text-sm text-gray-500 dark:text-neutral-500">
+                                    {{ $product->brand->brand_name }}
+                                </p>
+
+                                <!-- GROUPS -->
+                                <div class="flex flex-row items-center justify-between mt-3 align-middle">
+                                    @if($product->discounts->isNotEmpty() && $product->discounted_price < $product->prod_price)
+
+                                        {{-- Show prices --}}
+                                        <div>
+                                            <span class="text-neutral-400 line-through mr-2">₱{{ number_format($product->prod_price, 2) }}</span>
+                                            <span class="font-bold text-gray-500 dark:text-white">₱{{ number_format($product->discounted_price, 2) }}</span>
+                                        </div>
+                                        @else
+                                            {{-- No discount --}}
+                                            <div>
+                                                <span class="text-black font-bold">₱{{ number_format($product->prod_price, 2) }}</span>
+                                            </div>
+                                    @endif
                                 </div>
-                                @else
-                                    {{-- No discount --}}
-                                    <div>
-                                        <span class="text-black font-bold">₱{{ number_format($product->prod_price, 2) }}</span>
-                                    </div>
-                            @endif
-                        </div>
-                        <!-- EBD GROUP -->
+                                <!-- EBD GROUP -->
+
+                            </div>
+                            <img class="w-full h-[250px] md:h-[230px] lg:h-[200px] object-contain rounded-b-xl" src="{{ asset(Storage::url($product->prod_ft_image)) }}" alt="{{ $product->prod_slug }}">
+                        </a>
 
                     </div>
-                    <img class="w-full h-[250px] md:h-[230px] lg:h-[200px] object-contain rounded-b-xl" src="{{ asset(Storage::url($product->prod_ft_image)) }}" alt="{{ $product->prod_slug }}">
-                </a>
+                    <!-- End Card -->
+
+                    @empty
+                    <div class="container w-full mx-auto text-center col-span-full">
+
+                        <svg class="flex items-center justify-center flex-shrink-0 w-auto mx-auto text-red-500 align-middle h-14" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                        </svg>
+
+                        <h1 class="mt-4 text-2xl text-gray-800 dark:text-white">{{ __('No Products Created') }}</h1>
+
+                    </div>
+                    @endforelse
+
+                </div>
+                <!-- End Grid -->
+            </div>
+
+            <div class="col-span-5 md:col-span-1">
+
+                <div class="flex flex-col border border-gray-200 rounded-xl shadow-2xs divide-y overflow-hidden sm:flex sm:divide-y-0 divide-gray-200 dark:border-neutral-700 dark:shadow-neutral-700/70 dark:divide-neutral-600">
+                    <div class="flex flex-col flex-[1_0_0%] bg-white dark:bg-neutral-800">
+                        <div class="p-4 flex-1 md:p-5 border-b border-gray-200 dark:border-neutral-700">
+                            <h3 class="text-lg font-bold text-gray-800 dark:text-white">
+                                {{ __('Price') }}
+                            </h3>
+                            <div class="flex flex-col gap-y-4 mt-5">
+                                <div class="relative flex items-start flex-row">
+                                    <div class="flex items-center h-5">
+                                        <input type="checkbox" class="shrink-0 mt-0.5 border-gray-200 rounded-sm text-blue-600 focus:ring-blue-500 checked:border-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800 p-3" id="hs-default-checkbox">
+                                    </div>
+                                    <label for="hs-checkbox-delete" class="ms-3">
+                                        <span class="block text-sm font-semibold text-gray-800 dark:text-neutral-300">{{ __('₱ 500 Below') }}</span>
+                                    </label>
+                                </div>
+                                <div class="relative flex items-start flex-row">
+                                    <div class="flex items-center h-5">
+                                        <input type="checkbox" class="shrink-0 mt-0.5 border-gray-200 rounded-sm text-blue-600 focus:ring-blue-500 checked:border-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800 p-3" id="hs-default-checkbox">
+                                    </div>
+                                    <label for="hs-checkbox-delete" class="ms-3">
+                                        <span class="block text-sm font-semibold text-gray-800 dark:text-neutral-300">{{ __('₱ 500 - 1000') }}</span>
+                                    </label>
+                                </div>
+                                <div class="relative flex items-start flex-row">
+                                    <div class="mb-[0.125rem] block min-h-[1.5rem] ps-[1.5rem]">
+                                        <input
+                                        class="relative float-left -ms-[1.5rem] me-[6px] mt-[0.15rem] h-[1.125rem] w-[1.125rem] appearance-none rounded-[0.25rem] border-[0.125rem] border-solid border-red-500 outline-none before:pointer-events-none before:absolute before:h-[0.875rem] before:w-[0.875rem] before:scale-0 before:rounded-full before:bg-transparent before:opacity-0 before:shadow-checkbox before:shadow-transparent before:content-[''] checked:border-red checked:bg-red checked:before:opacity-[0.16] checked:after:absolute checked:after:-mt-px checked:after:ms-[0.25rem] checked:after:block checked:after:h-[0.8125rem] checked:after:w-[0.375rem] checked:after:rotate-45 checked:after:border-[0.125rem] checked:after:border-l-0 checked:after:border-t-0 checked:after:border-solid checked:after:border-red checked:after:bg-transparent checked:after:content-[''] hover:cursor-pointer hover:before:opacity-[0.04] hover:before:shadow-black/60 focus:shadow-none focus:transition-[border-color_0.2s] focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-black/60 focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-[0.875rem] focus:after:w-[0.875rem] focus:after:rounded-[0.125rem] focus:after:content-[''] checked:focus:before:scale-100 checked:focus:before:shadow-checkbox checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] checked:focus:after:-mt-px checked:focus:after:ms-[0.25rem] checked:focus:after:h-[0.8125rem] checked:focus:after:w-[0.375rem] checked:focus:after:rotate-45 checked:focus:after:rounded-none checked:focus:after:border-[0.125rem] checked:focus:after:border-l-0 checked:focus:after:border-t-0 checked:focus:after:border-solid checked:focus:after:border-red checked:focus:after:bg-transparent rtl:float-right dark:border-neutral-400 dark:checked:border-red dark:checked:bg-red"
+                                        type="checkbox"
+                                        value=""
+                                        id="hs-default-checkbox" />
+                                    </div>
+                                    <label for="hs-default-checkbox" class="ms-3">
+                                        <span class="block text-sm font-semibold text-gray-800 dark:text-neutral-300">{{ __('₱ 1000 above') }}</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col flex-[1_0_0%] bg-white dark:bg-neutral-800">
+                        <div class="p-4 flex-1 md:p-5 border-b border-gray-200 dark:border-neutral-700">
+                            <h3 class="text-lg font-bold text-gray-800 dark:text-white">
+                                Card title
+                            </h3>
+
+
+                            <div class="mb-[0.125rem] block min-h-[1.5rem] ps-[1.5rem]">
+                                <input
+                                    class="relative float-left -ms-[1.5rem] me-[6px] mt-[0.15rem] h-[1.125rem] w-[1.125rem] appearance-none rounded-[0.25rem] border-[0.125rem] border-solid border-red-500 outline-none before:pointer-events-none before:absolute before:h-[0.875rem] before:w-[0.875rem] before:scale-0 before:rounded-full before:bg-transparent before:opacity-0 before:shadow-checkbox before:shadow-transparent before:content-[''] checked:border-red checked:bg-red checked:before:opacity-[0.16] checked:after:absolute checked:after:-mt-px checked:after:ms-[0.25rem] checked:after:block checked:after:h-[0.8125rem] checked:after:w-[0.375rem] checked:after:rotate-45 checked:after:border-[0.125rem] checked:after:border-l-0 checked:after:border-t-0 checked:after:border-solid checked:after:border-white checked:after:bg-transparent checked:after:content-[''] hover:cursor-pointer hover:before:opacity-[0.04] hover:before:shadow-black/60 focus:shadow-none focus:transition-[border-color_0.2s] focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-black/60 focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-[0.875rem] focus:after:w-[0.875rem] focus:after:rounded-[0.125rem] focus:after:content-[''] checked:focus:before:scale-100 checked:focus:before:shadow-checkbox checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] checked:focus:after:-mt-px checked:focus:after:ms-[0.25rem] checked:focus:after:h-[0.8125rem] checked:focus:after:w-[0.375rem] checked:focus:after:rotate-45 checked:focus:after:rounded-none checked:focus:after:border-[0.125rem] checked:focus:after:border-l-0 checked:focus:after:border-t-0 checked:focus:after:border-solid checked:focus:after:border-white checked:focus:after:bg-transparent rtl:float-right dark:border-neutral-400 dark:checked:border-red dark:checked:bg-red"
+                                    type="checkbox"
+                                    value=""
+                                    id="checkboxDefault" />
+                                <label
+                                    class="inline-block ps-[0.15rem] hover:cursor-pointer"
+                                    for="checkboxDefault">
+                                    Default checkbox
+                                </label>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col flex-[1_0_0%] bg-white dark:bg-neutral-800">
+                        <div class="p-4 flex-1 md:p-5 border-b border-gray-200 dark:border-neutral-700">
+                            <h3 class="text-lg font-bold text-gray-800 dark:text-white">
+                                Card title
+                            </h3>
+                            <p class="mt-1 text-gray-500 dark:text-neutral-400">
+                                This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.
+                            </p>
+                        </div>
+                    </div>
+                </div>
 
             </div>
-            <!-- End Card -->
 
-            @empty
-            <div class="container w-full mx-auto text-center col-span-full">
+         </div>
 
-                <svg class="flex items-center justify-center flex-shrink-0 w-auto mx-auto text-red-500 align-middle h-14" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
-                </svg>
 
-                <h1 class="mt-4 text-2xl text-gray-800 dark:text-white">{{ __('No Products Created') }}</h1>
-
-            </div>
-            @endforelse
-
-        </div>
-        <!-- End Grid -->
     </div>
     <!-- End Card Blog -->
 

@@ -27,7 +27,7 @@
                                             </div>
                                             @endif
                                         </td>
-                                        <td class="px-6 py-4 text-sm text-gray-800 dark:text-neutral-200">{{ $item['name'] }} - ( <span class="font-semibold">{{ __('₱') }} {{ number_format($item['price'], 2) }}</span> )</td>
+                                        <td class="px-6 py-4 text-sm text-gray-800 dark:text-neutral-200">{{ $item['name'] }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
                                             {{ $item['quantity'] }} x
                                         </td>
