@@ -9,7 +9,7 @@
         <div class="grid gap-8 mt-5 lg:mt-16 lg:grid-cols-3 lg:gap-12">
         <div class="lg:col-span-1">
             <h2 class="text-2xl font-bold text-gray-800 md:text-3xl dark:text-neutral-200">
-            We tackle the challenges start-ups spatie
+            We tackle the challenges start-ups face
             </h2>
             <p class="mt-2 text-gray-500 md:mt-4 dark:text-neutral-500">
             Besides working with start-up enterprises as a partner for digitalization, we have built enterprise products for common pain points that we have encountered in various products and projects.
