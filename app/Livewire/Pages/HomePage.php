@@ -25,9 +25,10 @@ class HomePage extends Component
         $this->newProducts = Product::with([
             'brand:id,brand_name',
             'discounts' => function ($query) {
-                $query->select('discounts.id', 'discount_name', 'starts_at', 'ends_at')
-                      ->where('starts_at', '<=', now())
-                      ->where('ends_at', '>=', now());
+                 $query->select('discounts.id', 'discount_name', 'starts_at', 'ends_at');
+                // $query->select('discounts.id', 'discount_name', 'starts_at', 'ends_at')
+                    //   $query->where('starts_at', '<=', now())
+                    //   ->where('ends_at', '>=', now());
             }
         ])
         ->where('is_visible', true)
