@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Product extends Model
 {
-    protected $table = 'products';
+     protected $table = 'products';
 
     protected $fillable = [
         'brand_id',
@@ -35,7 +36,6 @@ class Product extends Model
         'prod_dimensions'
     ];
 
-
     /**
      * @var array<string, string>
      */
@@ -44,52 +44,131 @@ class Product extends Model
         'is_visible' => 'boolean',
         'prod_requires_shipping' => 'boolean',
         'prod_published_at' => 'datetime',
-        'prod_dimensions' => 'array', // Cast JSON to array
+        'prod_dimensions' => 'array',
     ];
 
-    public function brand() : BelongsTo
+    // Relationships
+    public function brand(): BelongsTo
     {
         return $this->belongsTo(Brand::class);
     }
-    public function productCategories() : BelongsToMany
+
+    public function productCategories(): BelongsToMany
     {
         return $this->belongsToMany(ProductCategory::class, 'product_category_product', 'product_id', 'product_category_id')->withTimestamps();
     }
-    public function productImages() : HasMany
+
+    public function productImages(): HasMany
     {
         return $this->hasMany(ProductImage::class);
     }
 
-    public function orderItems() : HasMany
+    public function orderItems(): HasMany
     {
         return $this->hasMany(OrderItem::class);
     }
 
-    public function discounts() : BelongsToMany
+    public function discounts(): BelongsToMany
     {
         return $this->belongsToMany(Discount::class, 'discount_product', 'product_id', 'discount_id')
-                    ->withPivot('discount_type', 'discount_code', 'discount_value')
+                    ->withPivot(['discount_type', 'discount_code', 'discount_value'])
                     ->withTimestamps();
     }
 
-    public function currentSale()
-    {
-        return $this->sales()
-            ->where('starts_at', '<=', now())
-            ->where('ends_at', '>=', now())
-            ->orderBy('starts_at', 'desc')
-            ->first();
-    }
-
-
-    public function cartItems() : HasMany
+    public function cartItems(): HasMany
     {
         return $this->hasMany(CartItem::class, 'product_id', 'id');
     }
 
+    // Scopes
+    public function scopeVisible(Builder $query): void
+    {
+        $query->where('is_visible', true);
+    }
+
+    public function scopeFeatured(Builder $query): void
+    {
+        $query->where('is_featured', true);
+    }
+
+    public function scopeWithShopRelations(Builder $query): void
+    {
+        $query->with([
+            'brand:id,brand_name',
+            'productCategories:id,prod_cat_name,prod_cat_slug',
+            'discounts' => function ($query) {
+                $query->select('discounts.id', 'discount_name', 'starts_at', 'ends_at')
+                    ->whereRaw('? BETWEEN `starts_at` AND `ends_at`', [now()]);
+            }
+        ]);
+    }
+
+    public function scopeNewest(Builder $query): void
+    {
+        $query->orderBy('created_at', 'desc');
+    }
+
+    public function scopeForShop(Builder $query): void
+    {
+        $query->visible()
+              ->withShopRelations()
+              ->newest();
+    }
+
+    public function scopeWithSingleProductRelations(Builder $query): void
+    {
+        $query->with([
+            'productImages',
+            'brand:id,brand_name',
+            'productCategories' => function($query) {
+                $query->where('is_visible', 1);
+            },
+            'discounts' => function ($query) {
+                $query->select('discounts.id', 'discount_name', 'starts_at', 'ends_at')
+                      ->whereRaw('? BETWEEN `starts_at` AND `ends_at`', [now()]);
+            }
+        ]);
+    }
+
+    public function scopeWithBasicRelations(Builder $query): void
+    {
+        $query->with([
+            'productImages',
+            'brand:id,brand_name',
+            'discounts' => function ($query) {
+                $query->select('discounts.id', 'discount_name', 'starts_at', 'ends_at')
+                      ->withPivot(['discount_type', 'discount_value'])
+                      ->whereRaw('? BETWEEN `starts_at` AND `ends_at`', [now()]);
+            }
+        ]);
+    }
+
+    public function scopeBySlug(Builder $query, string $slug): void
+    {
+        $query->where('prod_slug', $slug);
+    }
+
+    public function scopeRelatedByCategories(Builder $query, array $categoryIds, int $excludeProductId): void
+    {
+        $query->whereHas('productCategories', function ($q) use ($categoryIds) {
+                $q->whereIn('product_categories.id', $categoryIds);
+              })
+              ->where('id', '!=', $excludeProductId)
+              ->visible();
+    }
+
+    // Accessors
+    public function getActiveDiscountAttribute()
+    {
+        return $this->discounts->first(function ($discount) {
+            $now = now();
+            return $now->between($discount->starts_at, $discount->ends_at);
+        });
+    }
+
     public function getDiscountedPriceAttribute()
     {
-        $activeDiscount = $this->discounts->first();
+        $activeDiscount = $this->active_discount;
 
         if (!$activeDiscount) {
             return $this->prod_price;
@@ -109,22 +188,24 @@ class Product extends Model
         return $this->prod_price;
     }
 
-
-    public function getFormattedDiscountAttribute()
+    public function getDiscountBadgeTextAttribute()
     {
-        $activeDiscount = $this->discounts->first();
+        $activeDiscount = $this->active_discount;
 
         if (!$activeDiscount) {
             return null;
         }
 
-        $type = $activeDiscount->pivot->discount_type;
-        $value = $activeDiscount->pivot->discount_value;
+        $discount = $activeDiscount->pivot;
 
-        return $type === 'percentage'
-            ? number_format($value, 0) . '% OFF'
-            : '₱' . number_format($value, 2) . ' OFF';
+        return $discount->discount_type === 'percentage'
+            ? number_format($discount->discount_value, 0) . '% OFF'
+            : '₱' . number_format($discount->discount_value, 0) . ' OFF';
     }
 
-
+    public function getHasDiscountAttribute()
+    {
+        $activeDiscount = $this->active_discount;
+        return $activeDiscount && $this->discounted_price < $this->prod_price;
+    }
 }

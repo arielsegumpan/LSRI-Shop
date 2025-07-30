@@ -18,6 +18,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\Split;
 use Filament\Tables\Columns\ImageColumn;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Pages\SubNavigationPosition;
@@ -88,10 +89,8 @@ class DiscountResource extends Resource
                         ->seconds(false)
                         ->date('F j, Y, g:i a')
                         ->label('Starts At')
-                        ->minDate(now()->addDay()->startOfDay())
+                        ->minDate(now()->subDay()->startOfDay())
                         ->maxDate(now()->addDay()->endOfDay())
-                        ->hoursStep(1)
-                        ->minutesStep(5)
                         ->closeOnDateSelection(),
 
                         DateTimePicker::make('ends_at')
@@ -101,8 +100,6 @@ class DiscountResource extends Resource
                         ->date('F j, Y, g:i a')
                         ->label('Ends At')
                         ->minDate(now()->addDay()->startOfDay())
-                        ->hoursStep(1)
-                        ->minutesStep(5)
                         ->closeOnDateSelection(),
 
 

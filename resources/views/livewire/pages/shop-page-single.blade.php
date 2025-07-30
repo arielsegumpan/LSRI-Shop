@@ -1,5 +1,5 @@
 <div>
-
+    {{-- @dd($product) --}}
     <!-- Card Blog -->
     <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-5 mx-auto">
         <div class="mt-5">
@@ -90,10 +90,10 @@
 
                             <div class="flex flex-wrap flex-col md:flex-row items-center align-middle">
                                 <h1 class="text-4xl font-bold text-gray-800 dark:text-white">{{ $product->prod_name }}</h1>
-                                @if($product->formatted_discount)
+                                 @if ($product->discount_badge_text)
                                 {{-- Show discount badge --}}
                                 <span class="inline-block bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full ms-2">
-                                     {{ $product->formatted_discount }}
+                                     {{ $product->discount_badge_text }}
                                 </span>
                                 @endif
                             </div>
@@ -104,19 +104,19 @@
 
                                 <!-- GROUPS -->
                                 <div class="flex flex-row items-center justify-between mt-3 align-middle">
-                                    @if($product->discounts->isNotEmpty() && $product->discounted_price < $product->prod_price)
+                                    @if ($product->has_discount)
 
                                         {{-- Show prices --}}
                                         <div>
                                             <h2 class="text-3xl font-bold text-gray-800 dark:text-white">
-                                                <span class="text-neutral-400 line-through mr-2">₱{{ number_format($product->prod_price, 2) }}</span>
+                                                <span class="text-neutral-400 line-through text-sm mr-2">₱{{ number_format($product->prod_price, 2) }}</span>
                                                 <span class="font-bold text-gray-500 dark:text-white">₱{{ number_format($product->discounted_price, 2) }}</span>
                                             </h2>
                                         </div>
                                         @else
                                             {{-- No discount --}}
                                             <div>
-                                                <span class="text-black font-bold">₱{{ number_format($product->prod_price, 2) }}</span>
+                                                <span class="font-bold text-gray-500 dark:text-white">₱{{ number_format($product->prod_price, 2) }}</span>
                                             </div>
                                     @endif
                                 </div>
@@ -161,22 +161,39 @@
                         <div class="space-y-6">
 
                             <div class="grid gap-2 lg:grid-cols-2">
-                                @forelse ($related_products as $related_product )
-
-                                <div wire:key="related-product-{{ $related_product->id }}" >
+                                @forelse ($related_products as $related_product)
+                                <div wire:key="related-product-{{ $related_product->id }}">
                                     <!-- Media -->
                                     <a class="flex flex-col items-center group gap-x-6 focus:outline-none" href="{{ route('page.shop.single', ['prod_slug' => $related_product->prod_slug]) }}">
-                                        <div>
-                                            <img class=" top-0 object-contain rounded-lg w-full h-[200px]" src="{{ asset(Storage::url($related_product->productImages[0]->url)) }}" alt="{{ $related_product->prod_slug }}">
+                                        <div class="relative">
+                                            <img class="top-0 object-contain rounded-lg w-full h-[200px]" src="{{ asset(Storage::url($related_product->productImages[0]->url)) }}" alt="{{ $related_product->prod_slug }}">
                                         </div>
-                                        <div class="p-2">
+
+                                        <div class="p-2 text-start">
                                             <h3 class="mt-2 text-sm text-gray-800 dark:text-white">{{ $related_product->prod_name }}</h3>
-                                            <h4 class="mt-3 text-lg font-bold text-gray-800 dark:text-white">₱ {{ $related_product->prod_price }}</h4>
+
+                                            @if ($related_product->has_discount)
+                                                {{-- Show discounted price --}}
+                                                <div class="mt-3">
+                                                    <div class="flex flex-row items-center align-middle justify-start gap-2">
+                                                    <span class="text-neutral-400 line-through text-sm mr-1">₱{{ number_format($related_product->prod_price, 2) }}</span>
+                                                     @if ($related_product->discount_badge_text)
+                                                        {{-- Discount badge on image --}}
+                                                        <span class=" bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                                                            {{ $related_product->discount_badge_text }}
+                                                        </span>
+                                                    @endif
+                                                    </div>
+                                                    <h4 class="text-lg font-bold text-gray-800 dark:text-white">₱{{ number_format($related_product->discounted_price, 2) }}</h4>
+                                                </div>
+                                            @else
+                                                {{-- Regular price --}}
+                                                <h4 class="mt-3 text-lg font-bold text-gray-800 dark:text-white">₱{{ number_format($related_product->prod_price, 2) }}</h4>
+                                            @endif
                                         </div>
                                     </a>
                                     <!-- End Media -->
                                 </div>
-
                                 @empty
                                     <h1 class="text-lg font-bold text-gray-800 dark:text-white">{{ __('No related products') }}</h1>
                                 @endforelse

@@ -9,51 +9,46 @@ use Livewire\Attributes\Layout;
 
 class ShopPageSingle extends Component
 {
-    public $prod_slug;
-    public $prod_single;
+   public Product $product;
     public $related_products;
+
     public function mount($prod_slug)
     {
-        $this->prod_single = Product::with([
-            'productImages',
-            'brand:id,brand_name',
-            'productCategories' => function($query) {
-                $query->where('is_visible', 1); // Ensures only visible categories are retrieved
-            },
-            'discounts' => function ($query) {
-                $query->select('discounts.id', 'discount_name', 'starts_at', 'ends_at')
-                      ->where('starts_at', '<=', now())
-                      ->where('ends_at', '>=', now());
-            }
-        ])
-        ->where('prod_slug', $prod_slug)
-        ->first();
+        $this->product = Product::withSingleProductRelations()
+            ->bySlug($prod_slug)
+            ->visible()
+            ->firstOrFail();
 
-        if ($this->prod_single) {
-            $this->getRelatedProducts();
-        }
+        $this->getRelatedProducts();
     }
 
     private function getRelatedProducts()
     {
-        // Get category IDs of the current product
-        $categoryIds = $this->prod_single->productCategories->pluck('id')->toArray();
+        $categoryIds = $this->product->productCategories->pluck('id')->toArray();
 
-        $this->related_products = Product::with(['productImages', 'brand:id,brand_name'])
-            ->whereHas('productCategories', function ($query) use ($categoryIds) {
-                $query->whereIn('product_categories.id', $categoryIds); // Ensure correct table alias if needed
-            })
-            ->where('id', '!=', $this->prod_single->id) // Exclude current product
-            ->limit(6) // Get a limited number of related products
-            ->get();
+        if (empty($categoryIds)) {
+            // If no categories, get random visible products
+            $this->related_products = Product::withBasicRelations()
+                ->visible()
+                ->where('id', '!=', $this->product->id)
+                ->inRandomOrder()
+                ->limit(6)
+                ->get();
+        } else {
+            $this->related_products = Product::withBasicRelations()
+                ->relatedByCategories($categoryIds, $this->product->id)
+                ->inRandomOrder()
+                ->limit(6)
+                ->get();
+        }
     }
 
     #[Layout('layouts.app')]
     #[Title('Shop')]
     public function render()
     {
-        return view('livewire.pages.shop-page-single',[
-            'product' => $this->prod_single,
+        return view('livewire.pages.shop-page-single', [
+            'product' => $this->product,
             'related_products' => $this->related_products
         ]);
     }

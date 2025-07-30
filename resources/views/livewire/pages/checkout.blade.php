@@ -23,7 +23,7 @@
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200 dark:bg-neutral-900 dark:divide-neutral-700">
                                 @foreach ($cart as $productId => $item)
-                                    <tr wire:key="cart-item-checkout-{{ $productId }}">
+                                    <tr wire:key="cart-item-to-checkout-{{ $productId . '-' . $item['name']}}">
                                         <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">
                                             <img class="w-auto h-14 object-contain" src="{{ asset(Storage::url($item['image'])) }}" alt="{{ $item['name'] }}">
                                         </td>
@@ -34,7 +34,7 @@
 
                                             @if ($item['has_discount'])
                                                 <p class="flex flex-col items-start justify-start align-middle">
-                                                    <span class="line-through text-gray-500">₱{{ number_format($item['original_price'], 2) }}</span>
+                                                    <span class="line-through text-xs text-gray-500">₱{{ number_format($item['original_price'], 2) }}</span>
                                                     <span class="text-gray-900 dark:text-white font-bold">₱{{ number_format($item['price'], 2) }}</span>
                                                     <span class="text-xs text-red-500">({{ $item['discount_label']}})</span>
                                                 </p>
@@ -46,6 +46,7 @@
                                             <!-- Input Number -->
                                             <div class="inline-block px-3 py-2 bg-white border border-gray-300 rounded-lg dark:bg-neutral-900 dark:border-neutral-700" data-hs-input-number="item-{{ $productId }}">
                                                 <div class="flex items-center gap-x-1.5">
+                                                    @if ($item['quantity'] > 1)
                                                     <!-- Decrease -->
                                                     <button type="button"
                                                         class="inline-flex items-center justify-center text-sm font-medium text-gray-800 bg-white border border-gray-200 rounded-md shadow-sm size-6 gap-x-2 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 focus:dark:bg-gray-800 dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800"
@@ -56,13 +57,15 @@
                                                             <path d="M5 12h14"></path>
                                                         </svg>
                                                     </button>
+                                                    @endif
 
                                                     <!-- Quantity Input -->
                                                     <input
                                                         type="number"
                                                         class="p-0 w-12 bg-transparent border-0 text-center text-gray-800 dark:text-white focus:ring-0"
                                                         min="1"
-                                                        value="{{ $item['quantity'] }}"
+                                                        {{-- value="{{ $item['quantity'] }}" --}}
+                                                         wire:model.blur="cart.{{ $productId }}.quantity"
                                                         wire:change="updateQuantity('{{ $productId }}', $event.target.value)"
                                                         readonly
                                                     >
@@ -136,11 +139,12 @@
                     </div>
 
                     <div class="mt-6 border-t border-gray-200 dark:border-neutral-700 pt-4 flex justify-between font-bold text-lg">
-                        <span class="text-gray-900 dark:text-white">Total:</span>
-                        <span class="text-gray-900 dark:text-white">₱{{ number_format($total, 2) }}</span>
+                        <span class="text-gray-900 dark:text-white">{{ __('Total') }}</span>
+                        <span class="text-gray-900 dark:text-white">{{ __('₱') }} {{ number_format($total, 2) }}</span>
                     </div>
 
                 @else
+
                     <p class="text-gray-500 dark:text-neutral-400 text-center mx-auto flex flex-row items-center gap-x-2 justify-center">
                         {{ __('No items in your cart.') }}
 
@@ -150,12 +154,12 @@
 
                     </p>
 
-
                     <div class="mx-auto mt-6 flex justify-center">
                         <a href="{{ route('page.shop') }}" class="inline-flex flex-row items-center justify-center  px-4 py-3 text-sm font-medium text-center text-white align-middle bg-red-600 border border-transparent rounded-lg gap-x-2 hover:bg-red-700 focus:outline-none focus:bg-red-700 disabled:opacity-50 disabled:pointer-events-none">
                         {{ __('Continue Shopping') }}
-                    </a>
+                        </a>
                     </div>
+
                 @endif
 
 
@@ -166,31 +170,6 @@
             <!-- Items Summary-->
             <div class="col-span-3 md:col-span-1">
                 <div class="flex flex-col gap-y-6">
-                    <div class="flex flex-col bg-neutral-100 border border-gray-200 shadow-2xs rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
-                        <div class="bg-gray-100 border-b border-gray-200 rounded-t-xl py-3 px-4 md:py-4 md:px-5 dark:bg-neutral-900 dark:border-neutral-700">
-                            <div class="flex flex-row gap-x-2 items-center">
-                                <svg class="shrink-0 size-8 text-gray-900 dark:text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
-                                </svg>
-                                <h1 class="text-lg font-bold text-gray-900 dark:text-white">{{ __('Shipping Info') }}</h1>
-                            </div>
-                        </div>
-                        <div class="p-4 md:p-5">
-                            <h3 class="text-lg font-bold text-gray-800 dark:text-white">
-                            Card title
-                            </h3>
-                            <p class="mt-2 text-gray-500 dark:text-neutral-400">
-                            With supporting text below as a natural lead-in to additional content.
-                            </p>
-                            <a class="mt-3 inline-flex items-center gap-x-1 text-sm font-semibold rounded-lg border border-transparent text-red-600 decoration-2 hover:text-red-700 hover:underline focus:underline focus:outline-hidden focus:text-red-700 disabled:opacity-50 disabled:pointer-events-none dark:text-red-500 dark:hover:text-red-600 dark:focus:text-red-600" href="#">
-                            Card link
-                            <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="m9 18 6-6-6-6"></path>
-                            </svg>
-                            </a>
-                        </div>
-                    </div>
-
 
                     <div class="flex flex-col bg-neutral-100 border border-gray-200 shadow-2xs rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
                         <div class="bg-gray-100 border-b border-gray-200 rounded-t-xl py-3 px-4 md:py-4 md:px-5 dark:bg-neutral-900 dark:border-neutral-700">

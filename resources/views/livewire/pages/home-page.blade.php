@@ -309,16 +309,11 @@
                                 <h3 class="text-lg font-bold text-gray-800 dark:text-white py-1.5">
                                     {{ $product->prod_name }}
 
-                                    {{-- Show discount badge --}}
-                                    <span class="inline-block bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full mb-2 ms-2">
-                                        @php
-                                            $discount = $product->discounts->first()->pivot;
-
-                                            echo $discount->discount_type === 'percentage'
-                                                ? number_format($discount->discount_value,0) . '% OFF'
-                                                : '₱' . number_format($discount->discount_value, 0) . ' OFF';
-                                        @endphp
-                                    </span>
+                                    @if ($product->discount_badge_text)
+                                        <span class="inline-block bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full mb-2 ms-2">
+                                            {{ $product->discount_badge_text }}
+                                        </span>
+                                    @endif
 
                                 </h3>
 
@@ -328,8 +323,7 @@
 
                                 <!-- GROUPS -->
                                 <div class="flex flex-row items-center justify-start mt-3 align-middle">
-                                    @if($product->discounts->isNotEmpty() && $product->discounted_price < $product->prod_price)
-
+                                     @if ($product->has_discount)
                                         {{-- Show prices --}}
                                         <div>
                                             <span class="text-neutral-400 line-through mr-2">₱{{ number_format($product->prod_price, 2) }}</span>

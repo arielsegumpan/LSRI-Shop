@@ -29,7 +29,7 @@ class Discount extends Model
             'discount_product',
             'discount_id',
             'product_id'
-            )->withPivot('discount_type', 'discount_code', 'discount_value')
+            )->withPivot(['discount_type', 'discount_code', 'discount_value'])
             ->withTimestamps();
     }
 }

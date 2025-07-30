@@ -22,7 +22,7 @@ class Checkout extends Component
     public $customer_amount = 100;
     public $customer_payment_method = '';
 
-     // New card-related properties
+    // Card-related properties
     public $card_name = '';
     public $card_number = '';
     public $expiration_month = '';
@@ -39,73 +39,8 @@ class Checkout extends Component
     {
         $this->cart = session()->get('cart', []);
         $this->calculateSubTotal();
-        $this->calcaulateTax();
+        $this->calculateTax();
         $this->calculateTotal();
-    }
-
-    public function calculateTotal()
-    {
-        $this->total = $this->sub_total + $this->tax;
-        // return $this->total;
-    }
-
-    // public function calculateSubTotal()
-    // {
-    //     $this->sub_total = 0;
-
-    //     foreach ($this->cart as $productId => $item) {
-    //         $product = Product::with(['discounts'])->find($productId);
-    //         if (!$product) continue;
-
-    //         $quantity = $item['quantity'];
-    //         $originalPrice = $product->prod_price;
-    //         $discountedPrice = $this->getDiscountedPrice($product);
-
-    //         $this->cart[$productId]['price'] = $discountedPrice;
-
-    //         $this->sub_total += $discountedPrice * $quantity;
-    //     }
-
-    //     return $this->sub_total;
-    // }
-
-    public function calculateSubTotal()
-    {
-        $this->sub_total = 0;
-
-        foreach ($this->cart as $productId => $item) {
-            $product = Product::with('discounts')->find($productId);
-            if (!$product) continue;
-
-            $quantity = $item['quantity'];
-            $originalPrice = $product->prod_price;
-            $discountedPrice = $this->getDiscountedPrice($product);
-
-            // Update cart display fields
-            $this->cart[$productId]['original_price'] = $originalPrice;
-            $this->cart[$productId]['price'] = $discountedPrice;
-            $this->cart[$productId]['has_discount'] = $originalPrice != $discountedPrice;
-            $this->cart[$productId]['discount_label'] = $product->discounts->first()?->discount_name;
-            // $this->cart[$productId]['discount_val'] = $product->discounts->discount_value;
-
-            $this->sub_total += $discountedPrice * $quantity;
-        }
-
-        return $this->sub_total;
-    }
-
-
-    public function calcaulateTax()
-    {
-        $this->tax = 0;
-
-        foreach ($this->cart as $productId => $item) {
-            $quantity = $item['quantity'];
-            $price = $item['price']; // Already updated in calculateSubTotal
-            $this->tax += ($price * $quantity) * 0.12;
-        }
-
-        return $this->tax;
     }
 
     public function updateQuantity($productId, $quantity)
@@ -128,19 +63,18 @@ class Checkout extends Component
         $this->dispatch('checkout-updated');
 
         $this->calculateTotal();
-        $this->calcaulateTax();
+        $this->calculateTax();
         $this->calculateSubTotal();
     }
 
     public function removeItem($id)
     {
-       return $this->removeCartItem($id);
+        return $this->removeCartItem($id);
     }
 
     public function incCustAmount()
     {
         $this->customer_amount += 100;
-
     }
 
     public function decCustAmount()
@@ -150,17 +84,54 @@ class Checkout extends Component
         }
     }
 
-
     public function checkAmount()
     {
         if ($this->customer_amount < $this->total) {
             $this->dispatch('checkout-updated');
-           return $this->notify('Insufficient amount', 'error', 3000);
+            return $this->notify('Insufficient amount', 'error', 3000);
         }
-
-
     }
 
+    protected function calculateTotal()
+    {
+        $this->total = $this->sub_total + $this->tax;
+    }
+
+    protected function calculateSubTotal()
+    {
+        $this->sub_total = 0;
+
+        foreach ($this->cart as $productId => $item) {
+            $product = Product::with('discounts')->find($productId);
+            if (!$product) continue;
+
+            $quantity = $item['quantity'];
+            $originalPrice = $product->prod_price;
+            $discountedPrice = $this->getDiscountedPrice($product);
+
+            $this->cart[$productId]['original_price'] = $originalPrice;
+            $this->cart[$productId]['price'] = $discountedPrice;
+            $this->cart[$productId]['has_discount'] = $originalPrice != $discountedPrice;
+            $this->cart[$productId]['discount_label'] = $product->discounts->first()?->discount_name;
+
+            $this->sub_total += $discountedPrice * $quantity;
+        }
+
+        return $this->sub_total;
+    }
+
+    protected function calculateTax()
+    {
+        $this->tax = 0;
+
+        foreach ($this->cart as $productId => $item) {
+            $quantity = $item['quantity'];
+            $price = $item['price'];
+            $this->tax += ($price * $quantity) * 0.12;
+        }
+
+        return $this->tax;
+    }
 
     private function getDiscountedPrice($product)
     {
@@ -189,7 +160,6 @@ class Checkout extends Component
 
         return $originalPrice;
     }
-
 
     #[Layout('layouts.app')]
     public function render()

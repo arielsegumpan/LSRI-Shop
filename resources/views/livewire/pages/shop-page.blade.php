@@ -1,5 +1,6 @@
 <div>
 
+    {{-- @dd($productItems) --}}
     <!-- Card Blog -->
     <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
         <!-- Title -->
@@ -48,7 +49,7 @@
                     @forelse ($products as $product )
 
                     <!-- Card -->
-                    <div wire:key="card-product-{{ $product->id }}" class="flex flex-col mb-4 border shadow-sm bg-neutral-200 rounded-xl dark:bg-neutral-900 border-neutral-300 dark:border-neutral-700 dark:shadow-neutral-700/70 col-span-4 md:col-span-2">
+                    <div wire:key="card-product-{{ $product->id . '' . $product->prod_sku }}" class="flex flex-col mb-4 border shadow-sm bg-neutral-200 rounded-xl dark:bg-neutral-900 border-neutral-300 dark:border-neutral-700 dark:shadow-neutral-700/70 col-span-4 md:col-span-2">
 
                         <a class="px-5 py-5" href="{{ route('page.shop.single', $product->prod_slug) }}">
                             <div class="p-4 md:p-0 mb-4">
@@ -59,10 +60,10 @@
                                 <h3 class="text-lg font-bold text-gray-800 dark:text-white py-1.5">
                                     {{ $product->prod_name }}
 
-                                    @if($product->formatted_discount)
+                                    @if ($product->discount_badge_text)
                                         {{-- Show discount badge --}}
                                         <span class="inline-block bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full ms-2">
-                                            {{ $product->formatted_discount }}
+                                            {{ $product->discount_badge_text }}
                                         </span>
                                     @endif
                                 </h3>
@@ -73,24 +74,28 @@
 
                                 <!-- GROUPS -->
                                 <div class="flex flex-row items-center justify-between mt-3 align-middle">
-                                    @if($product->discounts->isNotEmpty() && $product->discounted_price < $product->prod_price)
+
+                                     @if ($product->has_discount)
 
                                         {{-- Show prices --}}
                                         <div>
-                                            <span class="text-neutral-400 line-through mr-2">₱{{ number_format($product->prod_price, 2) }}</span>
+                                            <span class="text-neutral-400 line-through text-sm mr-2">₱{{ number_format($product->prod_price, 2) }}</span>
                                             <span class="font-bold text-gray-500 dark:text-white">₱{{ number_format($product->discounted_price, 2) }}</span>
                                         </div>
-                                        @else
-                                            {{-- No discount --}}
-                                            <div>
-                                                <span class="text-black font-bold">₱{{ number_format($product->prod_price, 2) }}</span>
-                                            </div>
+                                    @else
+                                        {{-- No discount --}}
+                                        <div>
+                                            <span class="font-bold text-gray-500 dark:text-white">₱{{ number_format($product->prod_price, 2) }}</span>
+                                        </div>
                                     @endif
                                 </div>
                                 <!-- EBD GROUP -->
 
                             </div>
-                            <img class="w-full h-[250px] md:h-[230px] lg:h-[200px] object-contain rounded-b-xl" src="{{ asset(Storage::url($product->prod_ft_image)) }}" alt="{{ $product->prod_slug }}">
+                            <div class="aspect-4/4 overflow-hidden rounded-2xl">
+                                <img class="size-full object-cover rounded-2xl" src="{{ asset(Storage::url($product->prod_ft_image)) }}" alt="{{ $product->prod_slug }}">
+                            </div>
+                            {{-- <img class="w-full h-[250px] md:h-[230px] lg:h-[200px] object-contain rounded-b-xl" src="{{ asset(Storage::url($product->prod_ft_image)) }}" alt="{{ $product->prod_slug }}"> --}}
                         </a>
 
                     </div>
@@ -194,7 +199,7 @@
                                 Card title
                             </h3>
                             <p class="mt-1 text-gray-500 dark:text-neutral-400">
-                                This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.
+                               lorem10 ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.
                             </p>
                         </div>
                     </div>
