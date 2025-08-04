@@ -125,10 +125,10 @@
                     </button>
                     <!-- End Cart Button -->
 
-                    <a class="py-[7px] px-2.5 inline-flex items-center font-medium text-sm rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 focus:outline-hidden focus:bg-gray-100 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700" href="{{ route('filament.dashboard.auth.login') }}">
+                    <a class="py-[7px] px-2.5 inline-flex items-center font-medium text-sm rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 focus:outline-hidden focus:bg-gray-100 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700" href="{{ route('filament.auth.auth.login') }}">
                         {{ __('Sign in') }}
                     </a>
-                    <a class="py-2 px-2.5 inline-flex items-center font-medium text-sm rounded-lg bg-red-600 text-white hover:bg-red-700 focus:outline-hidden focus:bg-red-700 disabled:opacity-50 disabled:pointer-events-none dark:bg-red-500 dark:hover:bg-red-600 dark:focus:bg-red-600" href="{{ route('filament.dashboard.auth.register') }}">
+                    <a class="py-2 px-2.5 inline-flex items-center font-medium text-sm rounded-lg bg-red-600 text-white hover:bg-red-700 focus:outline-hidden focus:bg-red-700 disabled:opacity-50 disabled:pointer-events-none dark:bg-red-500 dark:hover:bg-red-600 dark:focus:bg-red-600" href="{{ route('filament.auth.auth.register') }}">
                         {{ __('Get started') }}
                     </a>
                 </div>

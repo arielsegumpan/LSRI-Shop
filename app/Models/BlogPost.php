@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class BlogPost extends Model
@@ -41,5 +42,24 @@ class BlogPost extends Model
     public function blogCategory() : BelongsTo
     {
         return $this->belongsTo(BlogCategory::class);
+    }
+
+    public function author() : BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function ScopeVisible(Builder $query): void
+    {
+        $query->where('is_visible', true);
+    }
+    public function scopePostSingle(Builder $query) : void
+    {
+        $query->with(['author', 'blogCategory']);
+    }
+
+    public function scopeByPostSlug(Builder $query, string $slug): void
+    {
+        $query->where('slug', $slug);
     }
 }

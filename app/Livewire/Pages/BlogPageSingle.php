@@ -10,10 +10,21 @@ use Livewire\Attributes\Layout;
 class BlogPageSingle extends Component
 {
 
+    public BlogPost $post;
+    public function mount($post_slug)
+    {
+       $this->post = BlogPost::postSingle()
+       ->byPostSlug($post_slug)
+       ->visible()
+       ->firstOrFail();
+    }
+
+
     #[Layout('layouts.app')]
     public function render()
     {
-        $this->getBlogPost();
-        return view('livewire.pages.blog-page');
+        return view('livewire.pages.blog-page-single', [
+            'post' => $this->post,
+        ]);
     }
 }

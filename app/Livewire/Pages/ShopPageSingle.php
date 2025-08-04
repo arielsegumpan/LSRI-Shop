@@ -9,7 +9,7 @@ use Livewire\Attributes\Layout;
 
 class ShopPageSingle extends Component
 {
-   public Product $product;
+    public Product $product;
     public $related_products;
 
     public function mount($prod_slug)

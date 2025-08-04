@@ -1,6 +1,4 @@
 <div>
-
-    {{-- @dd($productItems) --}}
     <!-- Card Blog -->
     <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
         <!-- Title -->
@@ -44,7 +42,7 @@
          <div class="grid gap-6 sm:grid-cols-2 md:grid-cols-5">
             <div class="col-span-5 md:col-span-4">
                 <!-- Grid -->
-                <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-6">
+                <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-8">
 
                     @forelse ($products as $product )
 
@@ -53,11 +51,11 @@
 
                         <a class="px-5 py-5" href="{{ route('page.shop.single', $product->prod_slug) }}">
                             <div class="p-4 md:p-0 mb-4">
-                                <span class=" inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800 dark:bg-teal-800/30 dark:text-teal-500">
+                                <small class="inline-flex items-center gap-x-1.5 py-1 px-3 rounded-full text-xs  bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-500">
                                     {{ $product->prod_sku }}
-                                </span>
+                                </small>
 
-                                <h3 class="text-lg font-bold text-gray-800 dark:text-white py-1.5">
+                                <h5 class="text-sm font-bold text-gray-800 dark:text-white py-1.5">
                                     {{ $product->prod_name }}
 
                                     @if ($product->discount_badge_text)
@@ -66,11 +64,18 @@
                                             {{ $product->discount_badge_text }}
                                         </span>
                                     @endif
-                                </h3>
+                                </h5>
 
-                                <p class="text-sm text-gray-500 dark:text-neutral-500">
-                                    {{ $product->brand->brand_name }}
-                                </p>
+                               <div class="flex flex-row justify-between align-middle items-center">
+                                    <p class="text-sm text-gray-500 dark:text-neutral-500">
+                                         4k+ sold
+                                        {{-- {{ $product->brand->brand_name }}--}}
+                                    </p>
+
+                                    <div>
+
+                                    </div>
+                               </div>
 
                                 <!-- GROUPS -->
                                 <div class="flex flex-row items-center justify-between mt-3 align-middle">
@@ -119,90 +124,87 @@
 
             <div class="col-span-5 md:col-span-1">
 
-                <div class="flex flex-col border border-gray-200 rounded-xl shadow-2xs divide-y overflow-hidden sm:flex sm:divide-y-0 divide-gray-200 dark:border-neutral-700 dark:shadow-neutral-700/70 dark:divide-neutral-600">
-                    <div class="flex flex-col flex-[1_0_0%] bg-white dark:bg-neutral-800">
-                        <div class="p-4 flex-1 md:p-5 border-b border-gray-200 dark:border-neutral-700">
-                            <h3 class="text-lg font-bold text-gray-800 dark:text-white">
-                                {{ __('Price') }}
-                            </h3>
-                            <div class="flex flex-col gap-y-4 mt-5">
+                <div class="flex flex-col flex-[1_0_0%]">
+                    {{-- CATEGORIES --}}
+                    <div class="p-4 flex-1 md:p-5 border-b border-gray-200 dark:border-neutral-700">
+                        <h3 class="text-sm font-bold text-gray-800 dark:text-white">
+                                {{ __('Category') }}
+                        </h3>
+                        <div class="flex flex-col gap-y-4 mt-5 md:mt-7">
+                            <div class="flex">
+                                <input type="checkbox" class="shrink-0 mt-0.5 p-2 border-gray-200 rounded-sm text-red-600 focus:ring-red-500 checked:border-red-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-red-500 dark:checked:border-red-500 dark:focus:ring-offset-gray-800" id="hs-checkbox-group-1">
+                                    <label for="hs-checkbox-group-1" class="text-sm text-gray-500 ms-3 dark:text-neutral-400">Phone and smart watches</label>
+                            </div>
 
-                                <div class="relative flex items-start space-x-3">
-                                    <div class="flex items-center h-6">
-                                        <input
-                                        type="checkbox"
-                                        id="custom-red-checkbox"
-                                        class="w-4 h-4 border-2 border-gray-300 rounded-sm
-                                                bg-transparent
-                                                text-red-600 focus:ring-1 focus:ring-red-500 focus:border-red-500
-                                                checked:bg-red-600 checked:border-red-800
-                                                dark:bg-neutral-900 dark:border-neutral-800
-                                                dark:checked:bg-red-800 dark:checked:border-red-800
-                                                dark:focus:ring-red-800 transition-all duration-150 ease-in-out"
-                                        >
-                                    </div>
-                                    <label for="custom-red-checkbox" class="text-sm font-medium text-gray-900 dark:text-neutral-200">
-                                        {{ __('₱ 500 Below') }}
-                                    </label>
+                            <div class="flex">
+                                <input type="checkbox" class="shrink-0 mt-0.5 p-2 border-gray-200 rounded-sm text-red-600 focus:ring-red-500 checked:border-red-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-red-500 dark:checked:border-red-500 dark:focus:ring-offset-gray-800" id="hs-checkbox-group-1">
+                                    <label for="hs-checkbox-group-1" class="text-sm text-gray-500 ms-3 dark:text-neutral-400">Phone and smart watches</label>
+                            </div>
+
+                            <div class="flex">
+                                <input type="checkbox" class="shrink-0 mt-0.5 p-2 border-gray-200 rounded-sm text-red-600 focus:ring-red-500 checked:border-red-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-red-500 dark:checked:border-red-500 dark:focus:ring-offset-gray-800" id="hs-checkbox-group-3">
+                                    <label for="hs-checkbox-group-3" class="text-sm text-gray-500 ms-3 dark:text-neutral-400">Phone and smart watches</label>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- END CATEGORIES --}}
+
+                    {{-- BRANDS --}}
+                    <div class="p-4 flex-1 md:p-5 border-b border-gray-200 dark:border-neutral-700">
+                        <h3 class="text-sm font-bold text-gray-800 dark:text-white">
+                                {{ __('Brands') }}
+                        </h3>
+
+                        <div class="max-w-sm mt-4">
+                            <!-- SearchBox -->
+                            <div class="relative" data-hs-combo-box='{
+                                "groupingType": "default",
+                                "isOpenOnFocus": true,
+                                "apiUrl": "../assets/data/searchbox.json",
+                                "apiGroupField": "category",
+                                "outputItemTemplate": "<div data-hs-combo-box-output-item><span class=\"flex items-center cursor-pointer py-2 px-4 w-full text-sm text-gray-800 hover:bg-gray-100 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:text-neutral-200\"><div class=\"flex items-center w-full\"><div class=\"flex items-center justify-center rounded-full bg-gray-200 size-6 overflow-hidden me-2.5\"><img class=\"shrink-0\" data-hs-combo-box-output-item-attr=&apos;[{\"valueFrom\": \"image\", \"attr\": \"src\"}, {\"valueFrom\": \"name\", \"attr\": \"alt\"}]&apos; /></div><div data-hs-combo-box-output-item-field=\"name\" data-hs-combo-box-value></div><div class=\"hidden\" data-hs-combo-box-output-item-field=&apos;[\"name\", \"category\"]&apos; data-hs-combo-box-search-text></div></div><span class=\"hidden hs-combo-box-selected:block\"><svg class=\"shrink-0 size-3.5 text-blue-600 dark:text-blue-500\" xmlns=\"http:.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"></polyline></svg></span></span></div>",
+                                "groupingTitleTemplate": "<div class=\"text-xs uppercase text-gray-500 m-3 mb-1 dark:text-neutral-500\"></div>"
+                            }'>
+                                <div class="relative">
+                                <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-3.5">
+                                    <svg class="shrink-0 size-4 text-gray-400 dark:text-white/60" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <path d="m21 21-4.3-4.3"></path>
+                                    </svg>
+                                </div>
+                                <input class="py-2.5 py-3 ps-10 pe-4 block w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" type="text" role="combobox" aria-expanded="false" placeholder="Type a name" value="" data-hs-combo-box-input="">
                                 </div>
 
+                                <!-- SearchBox Dropdown -->
+                                <div class="absolute z-50 w-full bg-white border border-gray-200 rounded-lg dark:bg-neutral-800 dark:border-neutral-700" style="display: none;" data-hs-combo-box-output="">
+                                <div class="max-h-72 rounded-b-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500" data-hs-combo-box-output-items-wrapper=""></div>
+                                </div>
+                                <!-- End SearchBox Dropdown -->
+                            </div>
+                            <!-- End SearchBox -->
+                        </div>
 
 
+                        <div class="flex flex-col gap-y-4 mt-5 md:mt-7">
+                            <div class="flex">
+                                <input type="checkbox" class="shrink-0 mt-0.5 p-2 border-gray-200 rounded-sm text-red-600 focus:ring-red-500 checked:border-red-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-red-500 dark:checked:border-red-500 dark:focus:ring-offset-gray-800" id="hs-checkbox-group-1">
+                                    <label for="hs-checkbox-group-1" class="text-sm text-gray-500 ms-3 dark:text-neutral-400">Phone and smart watches</label>
                             </div>
 
-                        </div>
-                    </div>
-
-                    <div class="flex flex-col flex-[1_0_0%] bg-white dark:bg-neutral-800">
-                        <div class="p-4 flex-1 md:p-5 border-b border-gray-200 dark:border-neutral-700">
-                            <h3 class="text-lg font-bold text-gray-800 dark:text-white">
-                                Card title
-                            </h3>
-
-
-                            <div class="mb-[0.125rem] block min-h-[1.5rem] ps-[1.5rem]">
-                                <input
-                                    class="relative float-left -ms-[1.5rem] me-[6px] mt-[0.15rem] h-[1.125rem] w-[1.125rem] appearance-none rounded-[0.25rem] border-[0.125rem] border-solid border-red-500 outline-none
-                                        before:pointer-events-none before:absolute before:h-[0.875rem] before:w-[0.875rem] before:scale-0 before:rounded-full before:bg-transparent before:opacity-0 before:shadow-checkbox before:shadow-transparent before:content-['']
-                                        checked:border-red checked:bg-red checked:before:opacity-[0.16]
-                                        checked:after:absolute checked:after:-mt-px checked:after:ms-[0.25rem] checked:after:block checked:after:h-[0.8125rem] checked:after:w-[0.375rem] checked:after:rotate-45 checked:after:border-[0.125rem] checked:after:border-l-0 checked:after:border-t-0 checked:after:border-solid checked:after:border-red-600 checked:after:bg-transparent checked:after:content-['']
-                                        hover:cursor-pointer hover:before:opacity-[0.04] hover:before:shadow-black/60
-                                        focus:shadow-none focus:transition-[border-color_0.2s] focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-black/60 focus:before:transition-[box-shadow_0.2s,transform_0.2s]
-                                        focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-[0.875rem] focus:after:w-[0.875rem] focus:after:rounded-[0.125rem] focus:after:content-['']
-                                        checked:focus:before:scale-100 checked:focus:before:shadow-checkbox checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s]
-                                        checked:focus:after:-mt-px checked:focus:after:ms-[0.25rem] checked:focus:after:h-[0.8125rem] checked:focus:after:w-[0.375rem] checked:focus:after:rotate-45 checked:focus:after:rounded-none checked:focus:after:border-[0.125rem] checked:focus:after:border-l-0 checked:focus:after:border-t-0 checked:focus:after:border-solid checked:focus:after:border-red-600 checked:focus:after:bg-transparent
-                                        rtl:float-right
-                                        dark:border-neutral-400 dark:checked:border-red dark:checked:bg-red"
-                                    type="checkbox"
-                                    value=""
-                                    id="checkboxDefault"
-                                />
-                                <label
-                                    class="inline-block ps-[0.15rem] hover:cursor-pointer"
-                                    for="checkboxDefault">
-                                    Default checkbox
-                                </label>
+                            <div class="flex">
+                                <input type="checkbox" class="shrink-0 mt-0.5 p-2 border-gray-200 rounded-sm text-red-600 focus:ring-red-500 checked:border-red-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-red-500 dark:checked:border-red-500 dark:focus:ring-offset-gray-800" id="hs-checkbox-group-1">
+                                    <label for="hs-checkbox-group-1" class="text-sm text-gray-500 ms-3 dark:text-neutral-400">Phone and smart watches</label>
                             </div>
 
-
-
-
-
-
-
+                            <div class="flex">
+                                <input type="checkbox" class="shrink-0 mt-0.5 p-2 border-gray-200 rounded-sm text-red-600 focus:ring-red-500 checked:border-red-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-red-500 dark:checked:border-red-500 dark:focus:ring-offset-gray-800" id="hs-checkbox-group-3">
+                                    <label for="hs-checkbox-group-3" class="text-sm text-gray-500 ms-3 dark:text-neutral-400">Phone and smart watches</label>
+                            </div>
                         </div>
                     </div>
+                    {{-- END BRANDS --}}
 
-                    <div class="flex flex-col flex-[1_0_0%] bg-white dark:bg-neutral-800">
-                        <div class="p-4 flex-1 md:p-5 border-b border-gray-200 dark:border-neutral-700">
-                            <h3 class="text-lg font-bold text-gray-800 dark:text-white">
-                                Card title
-                            </h3>
-                            <p class="mt-1 text-gray-500 dark:text-neutral-400">
-                               lorem10 ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.
-                            </p>
-                        </div>
-                    </div>
+                    {{-- PRICE RANGE --}}
                 </div>
 
             </div>
