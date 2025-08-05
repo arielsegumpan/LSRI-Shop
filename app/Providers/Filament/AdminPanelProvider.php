@@ -76,6 +76,7 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 PanelRoleMiddleware::class
             ])
+            ->sidebarWidth('17rem')
             ->plugins([
                 FilamentShieldPlugin::make()
                     ->sectionColumnSpan(1)

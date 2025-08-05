@@ -27,6 +27,10 @@ class User extends Authenticatable implements FilamentUser
         'name',
         'email',
         'password',
+        'contact_number',
+        'address_1',
+        'address_2',
+        'bio'
     ];
 
     /**
@@ -49,6 +53,7 @@ class User extends Authenticatable implements FilamentUser
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'bio' => 'array',
         ];
     }
 
@@ -78,6 +83,7 @@ class User extends Authenticatable implements FilamentUser
             default => true, // allow 'auth' or fallback
         };
     }
+
 
     public function usersPanel(): string
     {
