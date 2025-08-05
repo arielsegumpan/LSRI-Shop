@@ -37,7 +37,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogoHeight('3rem')
             ->favicon(asset('imgs/logo-01.png'))
             // ->topNavigation()
-            ->sidebarCollapsibleOnDesktop(true)
+            ->sidebarCollapsibleOnDesktop()
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
             ->pages([
@@ -45,22 +45,25 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\\Filament\\Admin\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                // Widgets\AccountWidget::class,
+                // Widgets\FilamentInfoWidget::class,
             ])
             ->navigationGroups([
 
                 NavigationGroup::make()
                 ->label('Shop')
-                ->icon('heroicon-o-building-storefront'),
+                ->icon('heroicon-o-building-storefront')
+                ->collapsible(false),
 
                 NavigationGroup::make()
                 ->label('Posts')
-                ->icon('heroicon-o-newspaper'),
+                ->icon('heroicon-o-newspaper')
+                ->collapsed(true),
 
                 NavigationGroup::make()
                 ->label('Accounts')
-                ->icon('heroicon-o-user-group'),
+                ->icon('heroicon-o-user-group')
+                ->collapsed(true),
             ])
             ->middleware([
                 EncryptCookies::class,

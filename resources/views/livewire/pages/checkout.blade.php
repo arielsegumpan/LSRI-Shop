@@ -64,7 +64,6 @@
                                                         type="number"
                                                         class="p-0 w-12 bg-transparent border-0 text-center text-gray-800 dark:text-white focus:ring-0"
                                                         min="1"
-                                                        {{-- value="{{ $item['quantity'] }}" --}}
                                                          wire:model.blur="cart.{{ $productId }}.quantity"
                                                         wire:change="updateQuantity('{{ $productId }}', $event.target.value)"
                                                         readonly
@@ -195,7 +194,7 @@
                                                     type="radio"
                                                     value="gcash"
                                                     wire:model.live="customer_payment_method"
-                                                    class="border-gray-200 rounded-full text-amber-600 focus:ring-amber-500 dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-amber-500 dark:checked:border-amber-500 dark:focus:ring-offset-gray-800"
+                                                    class="border-gray-200 rounded-full text-red-600 focus:ring-red-500 dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-red-500 dark:checked:border-red-500 dark:focus:ring-offset-gray-800"
                                                 >
                                             </div>
                                             <label for="payment-gcash" class="ms-3">
@@ -217,7 +216,7 @@
                                                     type="radio"
                                                     value="card"
                                                     wire:model.live="customer_payment_method"
-                                                    class="border-gray-200 rounded-full text-amber-600 focus:ring-amber-500 dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-amber-500 dark:checked:border-amber-500 dark:focus:ring-offset-gray-800"
+                                                    class="border-gray-200 rounded-full text-red-600 focus:ring-red-500 dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-red-500 dark:checked:border-red-500 dark:focus:ring-offset-gray-800"
                                                 >
                                             </div>
                                             <label for="payment-card" class="ms-3">
@@ -237,7 +236,7 @@
                                                     type="radio"
                                                     value="paymaya"
                                                     wire:model.live="customer_payment_method"
-                                                    class="border-gray-200 rounded-full text-amber-600 focus:ring-amber-500 dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-amber-500 dark:checked:border-amber-500 dark:focus:ring-offset-gray-800"
+                                                    class="border-gray-200 rounded-full text-red-600 focus:ring-red-500 dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-red-500 dark:checked:border-red-500 dark:focus:ring-offset-gray-800"
                                                 >
                                             </div>
                                             <label for="payment-paymaya" class="ms-3">
@@ -257,7 +256,7 @@
                                                     type="radio"
                                                     value="grab_pay"
                                                     wire:model.live="customer_payment_method"
-                                                    class="border-gray-200 rounded-full text-amber-600 focus:ring-amber-500 dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-amber-500 dark:checked:border-amber-500 dark:focus:ring-offset-gray-800"
+                                                    class="border-gray-200 rounded-full text-red-600 focus:ring-red-500 dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-red-500 dark:checked:border-red-500 dark:focus:ring-offset-gray-800"
                                                 >
                                             </div>
                                             <label for="payment-grabpay" class="ms-3">
@@ -285,19 +284,19 @@
                                     </h3>
 
                                     <div class="mb-3">
-                                    <input type="text" wire:model.blur="card_name" id="card_name" class="block w-full px-4 py-3 text-sm border-gray-200 rounded-lg focus:border-amber-500 focus:ring-amber-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600 bg-slate-100" placeholder="Name on Card">
+                                    <input type="text" wire:model.blur="card_name" id="card_name" class="block w-full px-4 py-3 text-sm border-gray-200 rounded-lg focus:border-red-500 focus:ring-red-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600 bg-slate-100" placeholder="Name on Card">
                                     @error('card_name') <span class="text-sm text-red-500">{{ $message }}</span> @enderror
                                     </div>
 
                                     <div class="mb-3">
-                                    <input type="text" wire:model.blur="card_number" id="card_number" class="block w-full px-3 py-3 text-sm border-gray-200 rounded-lg shadow-sm pe-11 focus:border-amber-500 focus:ring-amber-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" placeholder="1234 5678 9012 3456">
+                                    <input type="text" wire:model.blur="card_number" id="card_number" class="block w-full px-3 py-3 text-sm border-gray-200 rounded-lg shadow-sm pe-11 focus:border-red-500 focus:ring-red-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" placeholder="1234 5678 9012 3456">
                                     @error('card_number') <span class="text-sm text-red-500">{{ $message }}</span> @enderror
                                     </div>
 
                                     <div class="grid grid-cols-3 gap-4 mt-4 md:mt-5 lg:mt-8">
                                         <div>
                                             <span class="block mb-2 text-sm text-gray-600 dark:text-neutral-500">{{'Exp Month'}}</span>
-                                            <select wire:model.blur="expiration_month"  id="expiration_month" class="block w-full px-3 py-2 text-sm border-gray-200 rounded-lg shadow-sm pe-9 focus:border-amber-500 focus:ring-amber-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
+                                            <select wire:model.blur="expiration_month"  id="expiration_month" class="block w-full px-3 py-2 text-sm border-gray-200 rounded-lg shadow-sm pe-9 focus:border-red-500 focus:ring-red-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
                                                 <option value="">{{ __('Select Month') }}</option>
                                                 @for($i = 1; $i <= 12; $i++)
                                                     <option value="{{ $i }}">{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}</option>
@@ -309,7 +308,7 @@
                                         <div>
                                             <span class="block mb-2 text-sm text-gray-600 dark:text-neutral-500"> {{'Year'}}</span>
                                             <select wire:model.blur="expiration_year" id="expiration_year"
-                                                    class="block w-full px-3 py-2 text-sm border-gray-200 rounded-lg shadow-sm pe-9 focus:border-amber-500 focus:ring-amber-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
+                                                    class="block w-full px-3 py-2 text-sm border-gray-200 rounded-lg shadow-sm pe-9 focus:border-red-500 focus:ring-red-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
                                                 <option value="">{{'Year'}}</option>
                                                 @for($i = date('Y'); $i <= date('Y') + 10; $i++)
                                                     <option value="{{ $i }}">{{ $i }}</option>
@@ -320,7 +319,7 @@
 
                                         <div>
                                             <span class="block mb-2 text-sm text-gray-600 dark:text-neutral-500"> {{'CVV'}}</span>
-                                            <input type="text" wire:model.blur="cvv" id="cvv" class="block w-full px-3 py-2 text-sm border-gray-200 rounded-lg shadow-sm pe-11 focus:border-amber-500 focus:ring-amber-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                            <input type="text" wire:model.blur="cvv" id="cvv" class="block w-full px-3 py-2 text-sm border-gray-200 rounded-lg shadow-sm pe-11 focus:border-red-500 focus:ring-red-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                                 placeholder="123">
                                             @error('cvv') <span class="text-sm text-red-600">{{ $message }}</span> @enderror
                                         </div>

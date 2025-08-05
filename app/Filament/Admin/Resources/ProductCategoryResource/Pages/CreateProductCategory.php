@@ -19,7 +19,7 @@ class CreateProductCategory extends CreateRecord
     {
 
         $data['prod_cat_name'] = ucwords($data['prod_cat_name']);
-        $data['prod_slug'] = strtoupper($data['prod_slug']);
+        $data['prod_cat_slug'] = strtoupper($data['prod_cat_slug']);
         $data['prod_cat_desc'] = ucfirst($data['prod_cat_desc']);
         return $data;
     }
