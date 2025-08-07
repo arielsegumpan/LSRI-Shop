@@ -133,7 +133,75 @@
     </div>
     <!-- End Slider -->
 
+    <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-20 mx-auto">
+        <div class="grid items-center gap-12 sm:grid-cols-2 lg:grid-cols-3">
+             <div>
+                <!-- Card -->
+                <a class="block border border-gray-200 rounded-lg hover:shadow-2xs focus:outline-hidden dark:border-neutral-700" href="#">
+                    <div class="relative flex items-center overflow-hidden">
+                        <img class="w-32 sm:w-32 h-full absolute inset-0 object-cover rounded-s-lg" src="https://images.unsplash.com/photo-1661956600655-e772b2b97db4?q=80&w=560&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Blog Image">
 
+                        <div class="grow p-4 ms-32 sm:ms-32">
+                            <div class="min-h-24 flex flex-col justify-center">
+                                <h3 class="font-semibold text-sm text-gray-800 dark:text-neutral-300">
+                                Studio by Mailchimp
+                                </h3>
+                                <p class="mt-1 text-sm text-gray-500 dark:text-neutral-500">
+                                Produce professional, reliable streams easily leveraging Mailchimp's innovative broadcast studio.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <!-- End Card -->
+            </div>
+
+            <div>
+                <!-- Card -->
+                <a class="block border border-gray-200 rounded-lg hover:shadow-2xs focus:outline-hidden dark:border-neutral-700" href="#">
+                    <div class="relative flex items-center overflow-hidden">
+                        <img class="w-32 sm:w-32 h-full absolute inset-0 object-cover rounded-s-lg" src="https://images.unsplash.com/photo-1661956600655-e772b2b97db4?q=80&w=560&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Blog Image">
+
+                        <div class="grow p-4 ms-32 sm:ms-32">
+                            <div class="min-h-24 flex flex-col justify-center">
+                                <h3 class="font-semibold text-sm text-gray-800 dark:text-neutral-300">
+                                Studio by Mailchimp
+                                </h3>
+                                <p class="mt-1 text-sm text-gray-500 dark:text-neutral-500">
+                                Produce professional, reliable streams easily leveraging Mailchimp's innovative broadcast studio.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <!-- End Card -->
+            </div>
+
+            <div>
+                <!-- Card -->
+                <a class="block border border-gray-200 rounded-lg hover:shadow-2xs focus:outline-hidden dark:border-neutral-700" href="#">
+                    <div class="relative flex items-center overflow-hidden">
+                        <img class="w-32 sm:w-32 h-full absolute inset-0 object-cover rounded-s-lg" src="https://images.unsplash.com/photo-1661956600655-e772b2b97db4?q=80&w=560&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Blog Image">
+
+                        <div class="grow p-4 ms-32 sm:ms-32">
+                            <div class="min-h-24 flex flex-col justify-center">
+                                <h3 class="font-semibold text-sm text-gray-800 dark:text-neutral-300">
+                                Studio by Mailchimp
+                                </h3>
+                                <p class="mt-1 text-sm text-gray-500 dark:text-neutral-500">
+                                Produce professional, reliable streams easily leveraging Mailchimp's innovative broadcast studio.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <!-- End Card -->
+            </div>
+
+
+        </div>
+    </div>
+{{--
 
     <!-- Icon Blocks -->
     <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-20 mx-auto">
@@ -264,15 +332,15 @@
         </div>
         <!-- End Grid -->
     </div>
-    <!-- End Features -->
+    <!-- End Features --> --}}
 
 
-    <div class="my-20">
+    <div class="my-10">
         <!-- Title -->
         <div class="mb-10">
             <div class="flex flex-col flex-wrap items-center justify-between md:flex-row">
                 <div>
-                    <h2 class="text-2xl font-bold md:text-4xl md:leading-tight dark:text-white">New Items</h2>
+                    <h3 class="text-xl font-bold md:leading-tight dark:text-white">New Items</h3>
                     <p class="mt-1 text-gray-600 dark:text-neutral-400">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nemo, ad?</p>
                 </div>
 
@@ -298,10 +366,13 @@
                     <div class="absolute top-0 bottom-0 flex transition-transform duration-700 opacity-0 hs-carousel-body start-0 flex-nowrap cursor-grab hs-carousel-dragging:transition-none gap-2  hs-carousel-dragging:cursor-grabbing">
 
                     @foreach ($newProducts as $product)
+
+
                     <!-- Card -->
-                    <div wire:key="card-carousel-slide-{{ $product->id }}" class="hs-carousel-slide flex flex-col border bg-gray-300 shadow-sm bg-neutral-200 rounded-xl dark:bg-neutral-700 border-neutral-300 dark:border-neutral-700 dark:shadow-neutral-700/70">
-                        <a class="px-5 pt-5" href="{{ route('page.shop.single', $product->prod_slug) }}">
-                            <div class="p-4 md:p-5">
+                    <div wire:key="card-carousel-slide-{{ $product->id }}" class="hs-carousel-slide flex flex-col mb-4 border shadow-sm bg-neutral-200 rounded-xl dark:bg-neutral-900 border-neutral-300 dark:border-neutral-700 dark:shadow-neutral-700/70">
+
+                        <a class="px-5 py-5" href="{{ route('page.shop.single', $product->prod_slug) }}">
+                            <div class="p-4 md:p-0 mb-4">
                                 <span class=" inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800 dark:bg-teal-800/30 dark:text-teal-500">
                                     {{ $product->prod_sku }}
                                 </span>
@@ -340,7 +411,10 @@
                                 <!-- END GROUP -->
                             </div>
 
-                            <img class="w-full h-[250px] md:h-[170px] lg:h-[180px] object-contain rounded-b-xl" src="{{ asset(Storage::url($product->prod_ft_image)) }}" alt="{{ $product->prod_slug }}">
+                            <div class="aspect-4/4 overflow-hidden rounded-2xl">
+                                <img class="w-full h-[250px] md:h-[170px] lg:h-[220px] object-cover rounded-2xl" src="{{ asset(Storage::url($product->prod_ft_image)) }}" alt="{{ $product->prod_slug }}" >
+                            </div>
+
                         </a>
 
                     </div>
