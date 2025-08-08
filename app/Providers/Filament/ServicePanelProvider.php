@@ -37,6 +37,7 @@ class ServicePanelProvider extends PanelProvider
             ->favicon(asset('imgs/logo-01.png'))
             // ->topNavigation()
             ->sidebarCollapsibleOnDesktop(true)
+            ->authGuard('web')
             ->discoverResources(in: app_path('Filament/Service/Resources'), for: 'App\\Filament\\Service\\Resources')
             ->discoverPages(in: app_path('Filament/Service/Pages'), for: 'App\\Filament\\Service\\Pages')
             ->pages([

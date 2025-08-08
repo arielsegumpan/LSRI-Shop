@@ -1,17 +1,17 @@
 <?php
-
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Filament\Panel;
 use Filament\Facades\Filament;
-use Illuminate\Support\Facades\Auth;
-use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Notifications\Notifiable;
 use Filament\Models\Contracts\FilamentUser;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser
 {
@@ -30,7 +30,7 @@ class User extends Authenticatable implements FilamentUser
         'contact_number',
         'address_1',
         'address_2',
-        'bio'
+        'bio',
     ];
 
     /**
@@ -52,38 +52,38 @@ class User extends Authenticatable implements FilamentUser
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'bio' => 'array',
+            'password'          => 'hashed',
+            'bio'               => 'array',
         ];
     }
 
-     public function orders() : HasMany
+    public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
     }
 
-    public function cartItems() : HasMany
+    public function cartItems(): HasMany
     {
         return $this->hasMany(CartItem::class, 'user_id', 'id');
     }
 
-    public function blogPosts() : HasMany
+    public function blogPosts(): HasMany
     {
         return $this->hasMany(BlogPost::class, 'user_id', 'id');
     }
 
     public function canAccessPanel(Panel $panel): bool
     {
-        $user = Auth::user();
+        $user    = Auth::user();
         $panelId = $panel->getId();
 
         return match ($panelId) {
             'admin' => $user && $user->hasRole('super_admin'),
-            'service' => $user && $user->hasAnyRole(['mechanic']),
-            default => true, // allow 'auth' or fallback
+            'service'     => $user && $user->hasAnyRole(['mechanic']),
+            'customer'    => $user && $user->hasAnyRole(['customer']),
+            default       => true, // allow 'auth' or fallback
         };
     }
-
 
     public function usersPanel(): string
     {
@@ -91,8 +91,9 @@ class User extends Authenticatable implements FilamentUser
 
         return match ($role) {
             'super_admin' => Filament::getPanel('admin')->getUrl(),
-            'mechanic' => Filament::getPanel('service')->getUrl(),
-            default => Filament::getPanel('auth')->getUrl(),
+            'mechanic'    => Filament::getPanel('service')->getUrl(),
+            'customer'    => Redirect::route('page.customer-dashboard'),
+            default       => Filament::getPanel('auth')->getUrl(),
         };
     }
 }

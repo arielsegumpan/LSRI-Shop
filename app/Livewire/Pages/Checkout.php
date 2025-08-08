@@ -72,17 +72,18 @@ class Checkout extends Component
         return $this->removeCartItem($id);
     }
 
-    public function incCustAmount()
-    {
-        $this->customer_amount += 100;
-    }
+    // public function incCustAmount()
+    // {
+    //     $this->customer_amount += 100;
+    // }
 
-    public function decCustAmount()
-    {
-        if ($this->customer_amount > 100) {
-            $this->customer_amount -= 100;
-        }
-    }
+
+    // public function decCustAmount()
+    // {
+    //     if ($this->customer_amount > 100) {
+    //         $this->customer_amount -= 100;
+    //     }
+    // }
 
     public function checkAmount()
     {

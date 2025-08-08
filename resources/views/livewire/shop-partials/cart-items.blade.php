@@ -15,7 +15,7 @@
                             </thead>
                             <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
                                 @foreach ($cart as $productId => $item)
-                                    <tr class="cart-item">
+                                    <tr wire:key="cart-item-{{ $productId . '-' . $item['name']}}" class="cart-item">
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
                                             @if ($item['image'])
                                                 <img class="w-10 h-10 object-contain" src="{{ asset(Storage::url($item['image'])) }}" alt="{{ $item['name'] }}">

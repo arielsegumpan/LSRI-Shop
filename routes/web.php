@@ -10,6 +10,7 @@ use App\Livewire\Pages\ContactPage;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Pages\BlogPageSingle;
 use App\Livewire\Pages\ShopPageSingle;
+use App\Livewire\Pages\CustomerDashboard;
 use App\Livewire\Pages\ProductCategorieArchive;
 
 Route::get('/', HomePage::class)->name('page.home');
@@ -28,3 +29,7 @@ Route::get('/shop/categories/{prod_cat_slug}', ProductCategorieArchive::class)->
 
 Route::get('/services', Services::class)->name('page.services');
 Route::get('/checkout', Checkout::class)->name('page.checkout');
+
+Route::middleware(['auth:web', 'customer.role'])->group(function () {
+    Route::get('/customer-dashboard', CustomerDashboard::class)->name('page.customer-dashboard');
+});

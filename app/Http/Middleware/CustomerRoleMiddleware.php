@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Filament\Facades\Filament;
 use Symfony\Component\HttpFoundation\Response;
 
-class PanelRoleMiddleware
+class CustomerRoleMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,33 +16,19 @@ class PanelRoleMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $user = $request->user();
-        $currentPanelId = Filament::getCurrentPanel()?->getId();
+         $user = $request->user();
 
-        if (!$user || !$currentPanelId) {
+        if (!$user) {
             return redirect()->route('filament.auth.auth.login');
         }
 
-        // Define panel-to-role mapping
-        $panelRoles = [
-            'admin' => 'super_admin',
-            'service' => ['mechanic'],
-            'customer' => ['customer'],
-        ];
-
-        $requiredRoles = $panelRoles[$currentPanelId] ?? [];
-
-        if (!$user->hasAnyRole($requiredRoles)) {
+        if (!$user->hasRole('customer')) {
             if ($user->hasRole('super_admin')) {
                 return redirect()->to(Filament::getPanel('admin')->getUrl());
             }
 
             if ($user->hasAnyRole(['mechanic'])) {
                 return redirect()->to(Filament::getPanel('service')->getUrl());
-            }
-
-            if($user->hasAnyRole(['customer'])) {
-                return redirect()->route('page.customer-dashboard');
             }
 
             return redirect()->route('filament.auth.auth.login');

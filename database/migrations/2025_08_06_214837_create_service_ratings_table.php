@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\User;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -13,6 +14,11 @@ return new class extends Migration
     {
         Schema::create('service_ratings', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('service_request_id')->constrained('service_requests')->cascadeOnDelete();
+            $table->foreignIdFor(User::class, 'customer_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignIdFor(User::class, 'mechanic_id')->constrained('users')->cascadeOnDelete();
+            $table->tinyInteger('rating'); // 1–5
+            $table->text('comment')->nullable();
             $table->timestamps();
         });
     }

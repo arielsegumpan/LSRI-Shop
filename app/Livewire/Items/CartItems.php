@@ -18,10 +18,6 @@ class CartItems extends Component
     public $cart = [];
     public $cartCount = 0;
 
-    // protected $listeners = [
-    //     'cart-updated' => 'updateCart',
-    //     'add-to-cart' => 'addToCartFromEvent',
-    // ];
 
     public function mount(){
         $this->cart = Session::get('cart', []);
@@ -122,7 +118,7 @@ class CartItems extends Component
             // Store cart data in session to retrieve after login/registration
             Session::put('checkout_cart', $this->cart);
             // Redirect to register
-            return redirect()->route('filament.dashboard.auth.register');
+            return redirect()->route('filament.auth.auth.register');
         }
 
         // If the user is logged in, process the checkout

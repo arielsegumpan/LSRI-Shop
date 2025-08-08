@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('warranty_requests', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('service_request_id')->constrained('service_requests')->cascadeOnDelete();
+            $table->text('issue_description');
+            $table->enum('status', ['pending', 'approved', 'rejected', 'completed'])->default('pending');
+            $table->timestamp('submitted_at')->useCurrent();
+            $table->timestamp('resolved_at')->nullable();
             $table->timestamps();
         });
     }
