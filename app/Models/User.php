@@ -93,7 +93,7 @@ class User extends Authenticatable implements FilamentUser
             'super_admin' => Filament::getPanel('admin')->getUrl(),
             'mechanic'    => Filament::getPanel('service')->getUrl(),
             'customer'    => Redirect::route('page.customer-dashboard'),
-            default       => Filament::getPanel('auth')->getUrl(),
+            default       => Redirect::route('filament.auth.auth.login'),
         };
     }
 }

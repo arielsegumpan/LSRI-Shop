@@ -23,14 +23,6 @@ class CustomerRoleMiddleware
         }
 
         if (!$user->hasRole('customer')) {
-            if ($user->hasRole('super_admin')) {
-                return redirect()->to(Filament::getPanel('admin')->getUrl());
-            }
-
-            if ($user->hasAnyRole(['mechanic'])) {
-                return redirect()->to(Filament::getPanel('service')->getUrl());
-            }
-
             return redirect()->route('filament.auth.auth.login');
         }
 

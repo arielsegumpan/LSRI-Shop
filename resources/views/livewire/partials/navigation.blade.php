@@ -276,7 +276,7 @@
                                                 <form method="POST" action="#!" x-data>
                                                     @csrf
                                                     <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-red-500 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300"
-                                                        href="#!" @click.prevent="$root.submit();">
+                                                        href="{{ route('filament.auth.auth.logout') }}" @click.prevent="$root.submit();">
                                                         <svg class="flex-shrink-0 size-4"
                                                             xmlns="http://www.w3.org/2000/svg" width="24"
                                                             height="24" fill="none" viewBox="0 0 24 24"

@@ -30,6 +30,6 @@ Route::get('/shop/categories/{prod_cat_slug}', ProductCategorieArchive::class)->
 Route::get('/services', Services::class)->name('page.services');
 Route::get('/checkout', Checkout::class)->name('page.checkout');
 
-Route::middleware(['auth:web', 'customer.role'])->group(function () {
+Route::middleware(['customer.role'])->group(function () {
     Route::get('/customer-dashboard', CustomerDashboard::class)->name('page.customer-dashboard');
 });
