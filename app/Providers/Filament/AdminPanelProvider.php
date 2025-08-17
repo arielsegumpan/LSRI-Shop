@@ -57,6 +57,11 @@ class AdminPanelProvider extends PanelProvider
                 ->collapsible(false),
 
                 NavigationGroup::make()
+                ->label('Services')
+                ->icon('heroicon-o-cog-6-tooth')
+                ->collapsed(true),
+
+                NavigationGroup::make()
                 ->label('Posts')
                 ->icon('heroicon-o-newspaper')
                 ->collapsed(true),

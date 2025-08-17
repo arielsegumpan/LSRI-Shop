@@ -25,7 +25,12 @@ class Service extends Model
 
     public function requestItems() : HasMany
     {
-        return $this->hasMany(ServiceRequestItem::class);
+        return $this->hasMany(ServiceRequestItem::class, 'service_id', 'id');
     }
+
+    // public function serviceRequests() : HasMany
+    // {
+    //     return $this->hasMany(ServiceRequest::class);
+    // }
 
 }

@@ -72,6 +72,12 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(BlogPost::class, 'user_id', 'id');
     }
 
+    public function serviceRequests(): HasMany
+    {
+        return $this->hasMany(ServiceRequest::class, 'user_id', 'id');
+    }
+
+
     public function canAccessPanel(Panel $panel): bool
     {
         $user    = Auth::user();
@@ -92,8 +98,8 @@ class User extends Authenticatable implements FilamentUser
         return match ($role) {
             'super_admin' => Filament::getPanel('admin')->getUrl(),
             'mechanic'    => Filament::getPanel('service')->getUrl(),
-            'customer'    => Redirect::route('page.customer-dashboard'),
-            default       => Redirect::route('filament.auth.auth.login'),
+            'customer'    => route('page.customer-dashboard'),
+            default       => route('filament.auth.auth.login'),
         };
     }
 }

@@ -2,9 +2,9 @@
 
 namespace App\Filament\Service\Resources;
 
-use App\Filament\Service\Resources\VehicleResource\Pages;
-use App\Filament\Service\Resources\VehicleResource\RelationManagers;
-use App\Models\Vehicle;
+use App\Filament\Service\Resources\ServiceRequestResource\Pages;
+use App\Filament\Service\Resources\ServiceRequestResource\RelationManagers;
+use App\Models\ServiceRequest;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,11 +13,15 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class VehicleResource extends Resource
+class ServiceRequestResource extends Resource
 {
-    protected static ?string $model = Vehicle::class;
+    protected static ?string $model = ServiceRequest::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-bell-alert';
+
+    protected static ?string $navigationGroup = 'Services';
+
+    protected static ?int $navigationSort = 0;
 
     public static function form(Form $form): Form
     {
@@ -56,9 +60,9 @@ class VehicleResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListVehicles::route('/'),
-            'create' => Pages\CreateVehicle::route('/create'),
-            'edit' => Pages\EditVehicle::route('/{record}/edit'),
+            'index' => Pages\ListServiceRequests::route('/'),
+            'create' => Pages\CreateServiceRequest::route('/create'),
+            'edit' => Pages\EditServiceRequest::route('/{record}/edit'),
         ];
     }
 }

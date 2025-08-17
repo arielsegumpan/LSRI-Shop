@@ -23,21 +23,17 @@ class ServiceRequest extends Model
     protected $casts = [
         'requested_date' => 'date',
         'scheduled_date' => 'date',
+        'status' => 'boolean',
     ];
 
     public function customer() : BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function mechanic() : BelongsTo
     {
-        return $this->belongsTo(User::class, 'mechanic_id');
-    }
-
-    public function vehicle() : BelongsTo
-    {
-        return $this->belongsTo(Vehicle::class);
+        return $this->belongsTo(User::class, 'mechanic_id', 'id');
     }
 
     public function items() : HasMany
@@ -53,6 +49,11 @@ class ServiceRequest extends Model
     public function serviceRating() : HasOne
     {
         return $this->hasOne(ServiceRating::class);
+    }
+
+    public function serviceRequestItems() : HasMany
+    {
+        return $this->hasMany(ServiceRequestItem::class, 'service_request_id', 'id');
     }
 
 }

@@ -7,6 +7,7 @@ use Filament\Panel;
 use Filament\Widgets;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Navigation\NavigationGroup;
 use Filament\Http\Middleware\Authenticate;
 use App\Http\Middleware\PanelRoleMiddleware;
 use Illuminate\Session\Middleware\StartSession;
@@ -43,10 +44,17 @@ class ServicePanelProvider extends PanelProvider
             ->pages([
                 Pages\Dashboard::class,
             ])
+             ->navigationGroups([
+
+                NavigationGroup::make()
+                ->label('Services')
+                ->icon('heroicon-o-cog-6-tooth')
+                ->collapsed(true),
+            ])
             ->discoverWidgets(in: app_path('Filament/Service/Widgets'), for: 'App\\Filament\\Service\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                // Widgets\FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
