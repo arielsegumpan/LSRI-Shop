@@ -9,6 +9,8 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Split;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Repeater;
 use Filament\Tables\Columns\TextColumn;
@@ -33,51 +35,69 @@ class ServiceResource extends Resource
     {
         return $form
             ->schema([
-                Section::make()
-                ->schema([
+                Split::make([
+                    Section::make()
+                    ->schema([
 
-                    TextInput::make('service_name')
-                    ->required()
-                    ->live(onBlur: true)
-                    ->maxLength(255)
-                    ->afterStateUpdated(fn (string $state, Forms\Set $set) => $set('service_slug', Str::slug($state ?? ''))),
+                        Group::make()
+                        ->schema([
+                            TextInput::make('service_name')
+                                ->required()
+                                ->live(onBlur: true)
+                                ->maxLength(255)
+                                ->afterStateUpdated(fn (?string $state, Forms\Set $set) => $set('service_slug', Str::slug($state ?? ''))),
 
-                    TextInput::make('service_slug')
-                    ->disabled()
-                    ->dehydrated()
-                    ->required()
-                    ->maxLength(255)
-                    ->unique(Service::class, 'service_slug', ignoreRecord: true),
+                            TextInput::make('service_slug')
+                                ->disabled()
+                                ->dehydrated()
+                                ->required()
+                                ->maxLength(255)
+                                ->unique(Service::class, 'service_slug', ignoreRecord: true),
+                        ])
+                        ->columns([
+                            'sm' => 1,
+                            'md' => 2,
+                            'lg' => 2
+                        ]),
 
-                    TextInput::make('service_price')
-                    ->label('Price')
-                    ->required()
-                    ->numeric()
-                    ->minValue(1),
+                        RichEditor::make('service_description')
+                            ->label('Description')
+                            ->required()
+                            ->maxLength(65535)
+                            ->columnSpanFull(),
+                    ]),
 
-                    TextInput::make('service_standard_labor')
-                    ->label('Standard Labor')
-                    ->required()
-                    ->numeric()
-                    ->minValue(1),
+                    Section::make()
+                    ->schema([
+                        TextInput::make('service_price')
+                            ->label('Price')
+                            ->required()
+                            ->numeric()
+                            ->minValue(1)
+                            ->dehydrated()
+                            ->default(1.00)
+                            ->prefix('₱'),
 
-                    TextInput::make('service_warranty_period_days')
-                    ->label('Warrnanty Period (Days)')
-                    ->required()
-                    ->numeric()
-                    ->minValue(1)
-                    ->maxValue(90)
-                    ->default(15)
-                    ->dehydrated(),
+                        TextInput::make('service_standard_labor')
+                            ->label('Standard Labor')
+                            ->required()
+                            ->numeric()
+                            ->minValue(1),
 
-                    RichEditor::make('service_description')
-                    ->label('Description')
-                    ->required()
-                    ->maxLength(65535)
-                    ->columnSpanFull(),
-
+                        TextInput::make('service_warranty_period_days')
+                            ->label('Warrnanty Period (Days)')
+                            ->required()
+                            ->numeric()
+                            ->minValue(1)
+                            ->maxValue(90)
+                            ->default(15)
+                            ->dehydrated(),
+                    ])
+                    ->grow(false)
                 ])
-            ]);
+                ->columnSpanFull()
+                ->from('md'),
+        ]);
     }
 
     public static function table(Table $table): Table

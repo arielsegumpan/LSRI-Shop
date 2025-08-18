@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources;
 use Filament\Forms;
 use App\Models\User;
 use Filament\Tables;
+use App\Models\Service;
 use Filament\Forms\Form;
 use Filament\Pages\Page;
 use Filament\Tables\Table;
@@ -275,45 +276,62 @@ class ServiceRequestResource extends Resource
                             ->schema([
 
                                 Select::make('service_id')
-                                    ->relationship('service', 'name')
+                                    ->relationship('service', 'service_name')
                                     ->required()
                                     ->searchable()
                                     ->native(false)
-                                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->name),
+                                    ->getOptionLabelFromRecordUsing(fn ($record) => ucwords($record->service_name) . "   (₱{$record->service_price})")
+                                    ->preload()
+                                    ->disableOptionsWhenSelectedInSiblingRepeaterItems()
+                                    ->optionsLimit(6)
+                                    ->reactive()
+                                    ->live(onBlur: true)
+                                    ->afterStateUpdated(fn ($state, Forms\Set $set) => $set('serv_price', Service::query()->find($state)->service_price ?? 0))
+                                    ->distinct(),
 
-                                TextInput::make('quantity')
-                                    ->label('Quantity')
+                                TextInput::make('serv_price')
+                                    ->label('Unit Price')
                                     ->numeric()
+                                    ->disabled()
                                     ->dehydrated()
                                     ->required()
-                                    ->maxLength(12)
-                                    ->default(0)
-                                    ->reactive()
-                                    ->afterStateUpdated(function ($state, Forms\Set $set, Forms\Get $get) {
-                                        $set('subtotal', $state * $get('unit_price'));
-                                    }),
+                                    ->default(0),
+                                    // ->reactive()
+                                    // ->afterStateUpdated(function ($state, Forms\Set $set, Forms\Get $get) {
+                                    //     $set('subtotal_price', (1 * $get('serv_price')));
+                                    // }),
 
-                                // TextInput::make('unit_price')
-                                //     ->label('Unit Price')
+                                // TextInput::make('quantity')
+                                //     ->label('Quantity')
                                 //     ->numeric()
-                                //     ->disabled()
                                 //     ->dehydrated()
                                 //     ->required()
+                                //     ->minValue(1)
+                                //     ->maxLength(12)
                                 //     ->default(0)
                                 //     ->reactive()
                                 //     ->afterStateUpdated(function ($state, Forms\Set $set, Forms\Get $get) {
-                                //         $set('subtotal', $state * $get('unit_price'));
+                                //         $set('subtotal_price', $state * $get('serv_price'));
                                 //     }),
 
-                                TextInput::make('subtotal_price')
-                                    ->label('Subtotal')
-                                    ->numeric()
-                                    ->dehydrated()
-                                    ->required()
-                                    ->default(0.00)
-                                    ->placeholder('0.00')
-                                    ->readOnly(),
+                                // TextInput::make('subtotal_price')
+                                //     ->label('Subtotal')
+                                //     ->numeric()
+                                //     ->dehydrated()
+                                //     ->required()
+                                //     ->default(0.00)
+                                //     ->placeholder('0.00')
+                                //     ->readOnly(),
                             ])
+                            ->columns([
+                                'sm' => 1,
+                                'md' => 2,
+                                'lg' => 2
+                            ])
+                            ->itemLabel(fn (array $state): ?string => Service::query()->find($state['service_id'])->service_name ?? null)
+                            ->mutateRelationshipDataBeforeSaveUsing(function (array $data): array {
+                                return $data;
+                            })
                         ])
                     ])
 
@@ -321,6 +339,11 @@ class ServiceRequestResource extends Resource
                 ->skippable(false)
                 ->contained(false)
                 ->columnspanFull()
+
+                // ->mutateRelationshipDataBeforeFillUsing(function (array $data): array {
+                //     // add mutation diri
+                //     return $data;
+                // })
 
             ]);
     }
