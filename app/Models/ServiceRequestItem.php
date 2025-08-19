@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ServiceRequestItem extends Model
 {
+    // public $incrementing = true;
     protected $fillable = [
         'service_request_id',
         'service_id',

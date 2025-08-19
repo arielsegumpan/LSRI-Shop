@@ -28,14 +28,14 @@ class DatabaseSeeder extends Seeder
                 'role' => 'mechanic',
             ],
             [
-                'name' => 'Customer User',
-                'email' => 'customer@gmail.com',
+                'name' => 'Maye Leira Dilema',
+                'email' => 'delima@gmail.com',
                 'password' => bcrypt('qwerty12345'),
                 'role' => 'customer',
             ],
             [
-                'name' => 'Customer User 2',
-                'email' => 'customer2@gmail.com',
+                'name' => 'John Doe',
+                'email' => 'johndoe@gmail.com',
                 'password' => bcrypt('qwerty12345'),
                 'role' => 'customer',
             ],

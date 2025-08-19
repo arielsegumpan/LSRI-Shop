@@ -16,4 +16,15 @@ class EditServiceRequest extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
+
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+         $data['service_name'] = ucwords($data['service_name']);
+        return $data;
+    }
 }

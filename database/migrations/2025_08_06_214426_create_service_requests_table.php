@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('service_requests', function (Blueprint $table) {
             $table->id();
+            $table->string('service_number')->unique();
             $table->foreignIdFor(User::class, 'user_id')->constrained('users')->cascadeOnDelete(); // customer
             $table->foreignIdFor(User::class, 'mechanic_id')->nullable()->constrained('users')->onDelete('set null');
             $table->enum('vehicle_type', ['motorcycle', 'car','other'])->nullable();

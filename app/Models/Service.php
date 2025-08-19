@@ -23,7 +23,7 @@ class Service extends Model
         'service_standard_labor' => 'float',
     ];
 
-    public function requestItems() : HasMany
+    public function serviceRequestItems() : HasMany
     {
         return $this->hasMany(ServiceRequestItem::class, 'service_id', 'id');
     }

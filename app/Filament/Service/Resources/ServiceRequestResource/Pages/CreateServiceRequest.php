@@ -9,4 +9,16 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateServiceRequest extends CreateRecord
 {
     protected static string $resource = ServiceRequestResource::class;
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
+
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        $data['service_name'] = ucwords($data['service_name']);
+        return $data;
+    }
 }

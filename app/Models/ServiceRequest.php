@@ -11,11 +11,12 @@ class ServiceRequest extends Model
 {
     //
     protected $fillable = [
+        'service_number',
         'user_id',
-        'vehicle_id',
         'mechanic_id',
         'requested_date',
         'scheduled_date',
+        'vehicle_type',
         'status',
         'remarks',
     ];
@@ -23,7 +24,6 @@ class ServiceRequest extends Model
     protected $casts = [
         'requested_date' => 'date',
         'scheduled_date' => 'date',
-        'status' => 'boolean',
     ];
 
     public function customer() : BelongsTo
@@ -51,9 +51,9 @@ class ServiceRequest extends Model
         return $this->hasOne(ServiceRating::class);
     }
 
-    public function serviceRequestItems() : HasMany
-    {
-        return $this->hasMany(ServiceRequestItem::class, 'service_request_id', 'id');
-    }
+    // public function serviceRequestItems() : HasMany
+    // {
+    //     return $this->hasMany(ServiceRequestItem::class, 'service_request_id', 'id');
+    // }
 
 }

@@ -9,9 +9,7 @@ use Filament\Support\Contracts\HasLabel;
 enum VehicleTypeEnum: string implements HasIcon, HasColor, HasLabel
 {
     case Car = 'car';
-
     case Motorcycle = 'motorcycle';
-
     case Other = 'other';
 
 
